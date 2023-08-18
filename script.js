@@ -1,3 +1,8 @@
+function generateForm() {
+  const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
+  return randomNumber === 10 ? 0 : randomNumber;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const goButton = document.getElementById("goButton");
   const stopButton = document.getElementById("stopButton");
@@ -43,11 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
           binaryDigits = 4; // 2 rows of 4 binary digits each
           break;
         case "figures":
-          const figures = "0123456789";
-          randomNumber = figures.charAt(
-            Math.floor(Math.random() * figures.length)
-          );
-          binaryDigits = 1; // 1 figure per row
+          const form = generateForm();
+          const color = Math.floor(Math.random() * 9);
+          const randomFigure = `${form}${color}`
+          content = `<img src="images/${randomFigure}.png" alt="${randomFigure}" />`;
           break;
         default:
           randomNumber = Math.floor(Math.random() * 100).toString();
@@ -73,6 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
           rowElement.textContent = randomNumber.slice(start, end);
           numberElement.appendChild(rowElement);
         }
+      } else if (format === "figures") {
+        numberElement.innerHTML = content;
       } else {
         numberElement.textContent = randomNumber;
       }
