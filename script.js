@@ -1,3 +1,106 @@
+const casillero = [
+  "Hierro",
+  "Rata",
+  "Rino",
+  "Rama",
+  "Roca",
+  "Rulo",
+  "Rosa",
+  "Rifa",
+  "Reja",
+  "Rabo",
+  "Toro",
+  "Dado",
+  "Duna",
+  "Timo",
+  "Taco",
+  "Tela",
+  "Tos",
+  "Tufo",
+  "Ducha",
+  "Tubo",
+  "Noria",
+  "Nata",
+  "Nene",
+  "Nemo",
+  "Nuca",
+  "Nilo",
+  "Anis",
+  "Nife",
+  "Nicho",
+  "Nube",
+  "Mir",
+  "Moto",
+  "Mina",
+  "Momia",
+  "Hamaca",
+  "Miel",
+  "Mesa",
+  "Mafia",
+  "Mecha",
+  "Mapa",
+  "Cura",
+  "Cohete",
+  "Cono",
+  "Cama",
+  "Caca",
+  "Kilo",
+  "Kos",
+  "Cafe",
+  "Coche",
+  "Copa",
+  "Lira",
+  "Late",
+  "Lana",
+  "Lima",
+  "Loco",
+  "Lulu",
+  "Lazo",
+  "Elfo",
+  "Leche",
+  "Lobo",
+  "Sor",
+  "Seta",
+  "Seno",
+  "Sumo",
+  "Saco",
+  "Sol",
+  "Seso",
+  "Sofia",
+  "Soja",
+  "Sapo",
+  "Faro",
+  "Foto",
+  "Faena",
+  "Fama",
+  "Foca",
+  "Fila",
+  "Foso",
+  "Fofo",
+  "Ficha",
+  "Fobia",
+  "Hachero",
+  "Chita",
+  "Chan",
+  "Gema",
+  "Choco",
+  "Chal",
+  "Chess",
+  "Chufa",
+  "Gogó",
+  "Chivo",
+  "Bar",
+  "Puta",
+  "Poni",
+  "Puma",
+  "Buque",
+  "Bola",
+  "Vaso",
+  "Bofia",
+  "Bach",
+  "Papa",
+];
+
 function generateForm() {
   const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
   return randomNumber === 10 ? 0 : randomNumber;
@@ -13,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
   const boldCheckbox = document.getElementById("bold");
+  const muestraCasillaElement = document.getElementById("casillero");
 
   let interval;
 
@@ -50,15 +154,16 @@ document.addEventListener("DOMContentLoaded", function () {
         case "figures":
           const form = generateForm();
           const color = Math.floor(Math.random() * 9);
-          const randomFigure = `${form}${color}`
-          content = `<img src="images/${randomFigure}.png" alt="${randomFigure}" />`;
+          randomNumber = `${form}${color}`;
+          content = `<img src="images/${randomNumber}.png" alt="${randomNumber}" />`;
           break;
         default:
-          randomNumber = Math.floor(Math.random() * 100).toString();
+          randomNumber = Math.floor(Math.random() * 100).toString().padStart(2, "0");
       }
 
       const fontSize = parseInt(fontSizeInput.value);
       const isBold = boldCheckbox.checked;
+      const muestraCasillaALaVez = muestraCasillaElement.checked;
 
       const numberElement = document.createElement("div");
       numberElement.style.fontSize = `${fontSize}px`; // Apply font size
@@ -81,6 +186,17 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.innerHTML = content;
       } else {
         numberElement.textContent = randomNumber;
+      }
+
+      const wordElement = document.createElement("div");
+      if (muestraCasillaALaVez) {
+        let wordIdx = randomNumber % casillero.length;
+        if (format.includes("bin")) {
+          wordIdx = parseInt(randomNumber, 2);
+        }
+        wordElement.textContent = casillero[wordIdx];
+        wordElement.classList.add("word");
+        numberElement.appendChild(wordElement);
       }
 
       setTimeout(function () {
