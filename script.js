@@ -158,7 +158,9 @@ document.addEventListener("DOMContentLoaded", function () {
           content = `<img src="images/${randomNumber}.png" alt="${randomNumber}" />`;
           break;
         default:
-          randomNumber = Math.floor(Math.random() * 100).toString().padStart(2, "0");
+          randomNumber = Math.floor(Math.random() * 100)
+            .toString()
+            .padStart(2, "0");
       }
 
       const fontSize = parseInt(fontSizeInput.value);
@@ -170,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
       numberElement.style.fontWeight = isBold ? "bold" : "normal"; // Apply font weight
       numberElement.classList.add("number");
       numbersContainer.appendChild(numberElement);
+      console.log(randomNumber)
 
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
