@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeoutInput = document.getElementById("timeout");
   const showTimeInput = document.getElementById("showTime");
   const amountInput = document.getElementById("amount");
+  const numPairsInput = document.getElementById("numPairs");
   const formatSelect = document.getElementById("format");
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
@@ -141,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     numbersContainer.innerHTML = ""; // Clear previous numbers
     let counter = 0;
+    const numPairs = parseInt(numPairsInput.value);
 
     interval = setInterval(function () {
       if (counter >= amount) {
@@ -150,12 +152,13 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      let randomNumber;
+      let randomNumber = "";
       let binaryDigits = 0;
 
       const fontSize = parseInt(fontSizeInput.value);
       const isBold = boldCheckbox.checked;
-      const muestraCasillaALaVez = muestraCasillaElement.checked;
+      const muestraCasillaALaVez =
+        muestraCasillaElement.checked && numPairs === 1;
 
       const numberElement = document.createElement("div");
       numberElement.style.fontSize = `${fontSize}px`; // Apply font size
@@ -163,43 +166,48 @@ document.addEventListener("DOMContentLoaded", function () {
       numberElement.classList.add("number");
       numbersContainer.appendChild(numberElement);
 
-      switch (format) {
-        case "binary6":
-          randomNumber = Math.floor(Math.random() * 64)
-            .toString(2)
-            .padStart(6, "0");
-          binaryDigits = 3; // 2 rows of 3 binary digits each
-          break;
-        case "binary8":
-          randomNumber = Math.floor(Math.random() * 256)
-            .toString(2)
-            .padStart(8, "0");
-          binaryDigits = 4; // 2 rows of 4 binary digits each
-          break;
-        case "figures":
-          const form = generateForm();
-          const color = Math.floor(Math.random() * 9);
-          randomNumber = `${form}${color}`;
+      for (let i = 1; i <= numPairs; ++i) {
+        switch (format) {
+          case "binary6":
+            randomNumber += Math.floor(Math.random() * 64)
+              .toString(2)
+              .padStart(6, "0");
+            binaryDigits = 3; // 2 rows of 3 binary digits each
+            break;
+          case "binary8":
+            randomNumber += Math.floor(Math.random() * 256)
+              .toString(2)
+              .padStart(8, "0");
+            binaryDigits = 4; // 2 rows of 4 binary digits each
+            break;
+          case "figures":
+            const form = generateForm();
+            const color = Math.floor(Math.random() * 9);
+            randomNumber += `${form}${color}`;
 
-          if (muestraCasillaALaVez) {
-            const wordElement = document.createElement("div");
-            let wordIdx = randomNumber % casillero.length;
-            if (format.includes("bin")) {
-              wordIdx = parseInt(randomNumber, 2);
+            if (muestraCasillaALaVez) {
+              const wordElement = document.createElement("div");
+              let wordIdx = randomNumber % casillero.length;
+              if (format.includes("bin")) {
+                wordIdx = parseInt(randomNumber, 2);
+              }
+              wordElement.textContent = casillero[wordIdx];
+              wordElement.classList.add("word");
+              numberElement.appendChild(wordElement);
             }
-            wordElement.textContent = casillero[wordIdx];
-            wordElement.classList.add("word");
-            numberElement.appendChild(wordElement);
-          }
-          const imgElement = document.createElement("img");
-          imgElement.src = preloadedImages[parseInt(randomNumber)].src;
-          imgElement.alt = randomNumber;
-          numberElement.appendChild(imgElement);
-          break;
-        default:
-          randomNumber = Math.floor(Math.random() * 100)
-            .toString()
-            .padStart(2, "0");
+            const imgElement = document.createElement("img");
+            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
+            imgElement.alt = randomNumber;
+            numberElement.appendChild(imgElement);
+            break;
+          default:
+            if (i > 1) {
+              randomNumber += " · ";
+            }
+            randomNumber += Math.floor(Math.random() * 100)
+              .toString()
+              .padStart(2, "0");
+        }
       }
       numbers.push(randomNumber);
 
