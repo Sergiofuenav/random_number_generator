@@ -101,6 +101,17 @@ const casillero = [
   "Papa",
 ];
 
+const bin_to_int_map = new Map([
+["000", 0],
+["001", 1],
+["011", 2],
+["111", 3],
+["100", 4],
+["101", 5],
+["110", 6],
+["010", 9],
+])
+
 const preloadedImages = [];
 for (let i = 0; i < 100; i++) {
   if (i >= 10 && i < 30) {
@@ -169,6 +180,9 @@ document.addEventListener("DOMContentLoaded", function () {
       for (let i = 1; i <= numPairs; ++i) {
         switch (format) {
           case "binary6":
+            if (i > 1) {
+              randomNumber += " · ";
+            }
             randomNumber += Math.floor(Math.random() * 64)
               .toString(2)
               .padStart(6, "0");
@@ -185,6 +199,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const color = Math.floor(Math.random() * 9);
             randomNumber += `${form}${color}`;
 
+            const imgElement = document.createElement("img");
+            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
+            imgElement.alt = randomNumber;
+            numberElement.appendChild(imgElement);
             if (muestraCasillaALaVez) {
               const wordElement = document.createElement("div");
               let wordIdx = randomNumber % casillero.length;
@@ -195,10 +213,6 @@ document.addEventListener("DOMContentLoaded", function () {
               wordElement.classList.add("word");
               numberElement.appendChild(wordElement);
             }
-            const imgElement = document.createElement("img");
-            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
-            imgElement.alt = randomNumber;
-            numberElement.appendChild(imgElement);
             break;
           default:
             if (i > 1) {
@@ -211,14 +225,37 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       numbers.push(randomNumber);
 
+      if (muestraCasillaALaVez && format !== "figures") {
+        const wordElement = document.createElement("div");
+        console.log("Random number", randomNumber)
+        let wordIdx = randomNumber % casillero.length;
+        if (format.includes("bin")) {
+          wordIdx = parseInt(randomNumber, 2);
+          const arriba = randomNumber.slice(0, 3)
+          const  abajo = randomNumber.slice(3)
+          console.log("Arriba", arriba)
+          console.log("Abajo", abajo)
+          const ai = bin_to_int_map.get(arriba)
+          const abajo_int = bin_to_int_map.get(abajo)
+          console.log(ai, abajo_int)
+          wordIdx = ai * 10 + abajo_int
+        }
+          console.log("wordIdx", wordIdx)
+        wordElement.textContent = casillero[wordIdx];
+        wordElement.classList.add("word");
+        numberElement.appendChild(wordElement);
+      }
+
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
         const rows = Math.ceil(randomNumber.length / binaryDigits);
+        console.log("Rows", rows)
         for (let i = 0; i < rows; i++) {
           const rowElement = document.createElement("div");
           rowElement.classList.add("binary-row");
           const start = i * binaryDigits;
           const end = start + binaryDigits;
+          console.log("Random number", randomNumber)
           rowElement.textContent = randomNumber.slice(start, end);
           numberElement.appendChild(rowElement);
         }
@@ -226,16 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.textContent = randomNumber;
       }
 
-      if (muestraCasillaALaVez && format !== "figures") {
-        const wordElement = document.createElement("div");
-        let wordIdx = randomNumber % casillero.length;
-        if (format.includes("bin")) {
-          wordIdx = parseInt(randomNumber, 2);
-        }
-        wordElement.textContent = casillero[wordIdx];
-        wordElement.classList.add("word");
-        numberElement.appendChild(wordElement);
-      }
 
       setTimeout(function () {
         numbersContainer.removeChild(numberElement);
