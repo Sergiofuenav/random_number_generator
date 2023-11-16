@@ -104,9 +104,7 @@ const casillero = [
 function getRandomElementFromSet(set) {
   const items = Array.from(set);
   const randomIndex = Math.floor(Math.random() * items.length);
-  const res = items[randomIndex];
-  console.log("Res", res)
-  return res
+  return items[randomIndex];
 }
 
 const bin_to_int_map = new Map([
@@ -267,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
             binaryDigits = 3; // 2 rows of 3 binary digits each
             break;
           case "binary8":
-            randomNumber =""
+            randomNumber = ""
             let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
             let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
 
