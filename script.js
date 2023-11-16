@@ -118,17 +118,27 @@ const bin_to_int_map = new Map([
   ["010", 9],
 ])
 
-const preloadedImages = [];
+const preloadedFigures = [];
 for (let i = 0; i < 100; i++) {
   if (i >= 10 && i < 30) {
-    preloadedImages.push(null);
+    preloadedFigures.push(null);
     continue;
   }
   const img = new Image();
   const imageName = i.toString().padStart(2, "0"); // Format the image name
-  img.src = `images/${imageName}.png`; // Adjust the path based on your images' actual location
-  preloadedImages.push(img);
+  img.src = `figuras/${imageName}.png`; // Adjust the path based on your images' actual location
+  preloadedFigures.push(img);
 }
+
+const preloadedImagesCasillero = [null];
+// Falta la imagen para el 00
+for (let i = 1; i < 100; i++) {
+  const img = new Image();
+  const imageName = i.toString().padStart(2, "0"); // Format the image name
+  img.src = `imagenes_casillero/${imageName}.webp`; // Adjust the path based on your images' actual location
+  preloadedImagesCasillero.push(img);
+}
+console.log(preloadedImagesCasillero)
 
 function generateShape() {
   const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
@@ -212,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Muestra casillero aleatoriamente(controlando el porcentaje)
   const muestraCasillaElement = document.getElementById("casillero");
+  const muestraImagenesElement = document.getElementById("imagenes");
 
   let interval;
 
@@ -241,6 +252,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const fontSize = parseInt(fontSizeInput.value);
       const muestraCasillaALaVez =
         muestraCasillaElement.checked && numPairs === 1;
+
+      const muestraImagenesALaVez =
+        muestraImagenesElement.checked && numPairs === 1;
 
       const numberElement = document.createElement("div");
       numberElement.style.fontSize = `${fontSize}px`; // Apply font size
@@ -299,9 +313,8 @@ document.addEventListener("DOMContentLoaded", function () {
               wordElement.classList.add("word");
               numberElement.appendChild(wordElement);
             }
-
             const imgElement = document.createElement("img");
-            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
+            imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
             imgElement.alt = randomNumber;
             numberElement.appendChild(imgElement);
 
@@ -343,8 +356,8 @@ document.addEventListener("DOMContentLoaded", function () {
         wordElement.classList.add("bottom");
         wordElement.style.fontSize = "40px"; // Apply font size
         numberElement.appendChild(wordElement);
-      }
 
+      }
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
         const rows = Math.ceil(randomNumber.length / binaryDigits);
@@ -358,6 +371,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       } else if (format === "decimal") {
         numberElement.textContent = randomNumber;
+      }
+
+      console.log(randomNumber)
+      if (format === "decimal" && randomNumber !== "00" || format === "binary6" && randomNumber !== "000000") {
+        if (muestraImagenesALaVez && format !== "figures") {
+          const imgElement = document.createElement("img");
+          let wordIdx = parseInt(randomNumber)
+
+          if (format.includes("bin")) {
+            wordIdx = parseInt(randomNumber, 2);
+            const arriba = randomNumber.slice(0, 3)
+            const abajo = randomNumber.slice(3)
+            const ai = bin_to_int_map.get(arriba)
+            const abajo_int = bin_to_int_map.get(abajo)
+            wordIdx = ai * 10 + abajo_int
+          }
+
+          console.log("Word idx", wordIdx)
+
+          imgElement.src = preloadedImagesCasillero[wordIdx].src;
+          imgElement.alt = randomNumber;
+
+          imgElement.style.display = 'block';  // Replace 200px with your desired width
+          imgElement.style.width = '200px';  // Replace 200px with your desired width
+
+          // Optionally, you can add object-fit to preserve the aspect ratio
+          imgElement.style.objectFit = 'cover';
+
+          numberElement.appendChild(imgElement);
+        }
       }
 
       setTimeout(function () {
