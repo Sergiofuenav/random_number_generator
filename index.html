@@ -1,42 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Random Number Display</title>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="container">
-      <div class="top">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Number Display</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="top">
+      <div class="row">
         <label for="timeout">Timeout (ms):</label>
-        <input type="number" id="timeout" min="0" value="150" />
+        <input type="number" id="timeout" min="0" value="150" style="width: 100px;" />
         <label for="showTime">Show Time (ms):</label>
-        <input type="number" id="showTime" min="0" value="150" />
+        <input type="number" id="showTime" min="0" value="150" style="width: 100px;" />
         <label for="amount">Amount:</label>
-        <input type="number" id="amount" min="1" value="10" />
-        <label for="amount">Num Pairs:</label>
-        <input type="number" id="numPairs" min="1" value="1" />
+        <input type="number" id="amount" min="1" value="10" style="width: 100px;" />
+      </div>
+      <div class="row">
+        <label for="numPairs">Num Pairs:</label>
+        <input type="number" id="numPairs" min="1" value="1" style="width: 100px;" />
         <label for="format">Format:</label>
-        <label for="fontSize">Font Size:</label>
-        <input type="number" id="fontSize" min="10" value="50" />
-        <label for="bold">Bold:</label>
-        <input type="checkbox" id="bold" />
-        <label for="casillero">Casillero:</label>
-        <input type="checkbox" id="casillero" unchecked/>
         <select id="format">
           <option value="decimal">Decimal</option>
           <option value="binary6">Binary (6 bits)</option>
           <option value="binary8">Binary (8 bits)</option>
           <option value="figures">Figures</option>
         </select>
-        <button id="goButton">Go</button>
-        <button id="stopButton">Stop</button>
+        <label for="fontSize">Font Size:</label>
+        <input type="number" id="fontSize" min="10" value="50" style="width: 100px;" />
+        <label for="casillero">Casillero:</label>
+        <input type="checkbox" id="casillero" unchecked />
       </div>
-      <div class="bottom">
-        <!-- Numbers will be displayed here -->
+      <label for="practicarFallos">Fallos solo:</label>
+      <input type="checkbox" id="practicarFallos" unchecked />
+      <label for="fallos">Digitos (o lados para figuras):</label>
+      <input type="text" id="fallos" pattern="[0-9]+(,[0-9]+)*" placeholder="Separados por comas" />
+      <div id="colors" class="row">
+        <label for="colors">Colores:</label>
+        <input type="checkbox" id="color_negro" name="color" value="negro" checked />
+        <label for="color_negro">Negro</label>
+        <input type="checkbox" id="color_marron" name="color" value="marron" checked />
+        <label for="color_marron">Marron</label>
+        <input type="checkbox" id="color_rojo" name="color" value="rojo" checked />
+        <label for="color_rojo">Rojo</label>
+        <input type="checkbox" id="color_naranja" name="color" value="naranja" checked />
+        <label for="color_amarillo">Naranja</label>
+        <input type="checkbox" id="color_amarillo" name="color" value="amarillo" checked />
+        <label for="color_amarillo">Amarillo</label>
+        <input type="checkbox" id="color_verde" name="color" value="verde" checked />
+        <label for="color_verde">Verde</label>
+        <input type="checkbox" id="color_azul" name="color" value="azul" checked />
+        <label for="color_azul">Azul</label>
+        <input type="checkbox" id="color_violeta" name="color" value="violeta" checked />
+        <label for="color_violeta">Violeta</label>
+        <input type="checkbox" id="color_gris" name="color" value="gris" checked />
+        <label for="color_gris">Gris</label>
+        <input type="checkbox" id="color_blanco" name="color" value="blanco" checked />
+        <label for="color_blanco">Blanco</label>
       </div>
+      <button id="goButton">Go</button>
+      <button id="stopButton">Stop</button>
     </div>
-    <script src="script.js"></script>
-  </body>
+    <div class="bottom">
+      <!-- Numbers will be displayed here -->
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
 </html>

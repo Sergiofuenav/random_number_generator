@@ -101,15 +101,23 @@ const casillero = [
   "Papa",
 ];
 
+function getRandomElementFromSet(set) {
+  const items = Array.from(set);
+  const randomIndex = Math.floor(Math.random() * items.length);
+  const res = items[randomIndex];
+  console.log("Res", res)
+  return res
+}
+
 const bin_to_int_map = new Map([
-["000", 0],
-["001", 1],
-["011", 2],
-["111", 3],
-["100", 4],
-["101", 5],
-["110", 6],
-["010", 9],
+  ["000", 0],
+  ["001", 1],
+  ["011", 2],
+  ["111", 3],
+  ["100", 4],
+  ["101", 5],
+  ["110", 6],
+  ["010", 9],
 ])
 
 const preloadedImages = [];
@@ -124,12 +132,31 @@ for (let i = 0; i < 100; i++) {
   preloadedImages.push(img);
 }
 
-function generateForm() {
+function generateShape() {
   const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
   return randomNumber === 10 ? 0 : randomNumber;
 }
 
+const color_to_int_map = new Map([
+  ["negro", 0],
+  ["marron", 1],
+  ["rojo", 2],
+  ["naranja", 3],
+  ["amarillo", 4],
+  ["verde", 5],
+  ["azul", 6],
+  ["violeta", 7],
+  ["gris", 8],
+  ["blanco", 9],
+])
+
 document.addEventListener("DOMContentLoaded", function () {
+  // Inicialmente no mostrar fallos
+  colors.style.display = "none";
+  fallos.style.display = "none";
+  fallos.previousElementSibling.style.display = "none";
+  colors.previousElementSibling.style.display = "none";
+
   const goButton = document.getElementById("goButton");
   const stopButton = document.getElementById("stopButton");
   const timeoutInput = document.getElementById("timeout");
@@ -139,14 +166,59 @@ document.addEventListener("DOMContentLoaded", function () {
   const formatSelect = document.getElementById("format");
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
-  const boldCheckbox = document.getElementById("bold");
+  const practicarFallos = document.getElementById("practicarFallos");
 
-  // Muestra casillero aleatoriamente (controlando el porcentaje)
+  const fallosInput = document.getElementById("fallos");
+
+  let coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+  let fallosSet = new Set();
+
+  const colorCheckboxes = document.querySelectorAll("[id^='color_']");
+  colorCheckboxes.forEach(function (checkbox) {
+    checkbox.addEventListener("change", function () {
+      const color = checkbox.value.toLowerCase();
+      const int_from_color = color_to_int_map.get(color)
+      if (checkbox.checked) {
+        coloresSet.add(int_from_color);
+      } else {
+        coloresSet.delete(int_from_color);
+      }
+      console.log("Colores set", coloresSet)
+    });
+  });
+
+  fallosInput.addEventListener("input", function () {
+    const fallosString = fallosInput.value.trim().replace(/,$/, '');
+    let array = []
+    if (formatSelect.value.includes("bin")) {
+      array = fallosString.split(",")
+    } else {
+      array = fallosString.split(",").map(Number);
+    }
+    fallosSet = array.length === 0 ? new Set() : new Set(array);
+  });
+
+  practicarFallos.addEventListener("change", function () {
+    if (practicarFallos.checked) {
+      colors.style.display = "inline";
+      fallos.style.display = "inline";
+      fallos.previousElementSibling.style.display = "inline";
+      colors.previousElementSibling.style.display = "inline";
+    } else {
+      colors.style.display = "none";
+      fallos.style.display = "none";
+      fallos.previouselementsibling.style.display = "none";
+      colors.previouselementsibling.style.display = "none";
+    }
+  });
+
+  // Muestra casillero aleatoriamente(controlando el porcentaje)
   const muestraCasillaElement = document.getElementById("casillero");
 
   let interval;
 
   let numbers = [];
+
   goButton.addEventListener("click", function () {
     const timeout = parseInt(timeoutInput.value);
     const showTime = parseInt(showTimeInput.value);
@@ -169,42 +241,56 @@ document.addEventListener("DOMContentLoaded", function () {
       let binaryDigits = 0;
 
       const fontSize = parseInt(fontSizeInput.value);
-      const isBold = boldCheckbox.checked;
       const muestraCasillaALaVez =
         muestraCasillaElement.checked && numPairs === 1;
 
       const numberElement = document.createElement("div");
       numberElement.style.fontSize = `${fontSize}px`; // Apply font size
-      numberElement.style.fontWeight = isBold ? "bold" : "normal"; // Apply font weight
       numberElement.classList.add("number");
       numbersContainer.appendChild(numberElement);
 
       for (let i = 1; i <= numPairs; ++i) {
         switch (format) {
           case "binary6":
-            if (i > 1) {
-              randomNumber += " · ";
+            randomNumber = "";
+
+            let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+            let decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+
+            if (practicarFallos && fallosSet.size > 0) {
+              while (!fallosSet.has(unidadBin6) && !fallosSet.has(decenaBin6)) {
+                unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+                decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+              }
             }
-            randomNumber += Math.floor(Math.random() * 64)
-              .toString(2)
-              .padStart(6, "0");
+            randomNumber += decenaBin6 + unidadBin6
             binaryDigits = 3; // 2 rows of 3 binary digits each
             break;
           case "binary8":
-            randomNumber += Math.floor(Math.random() * 256)
-              .toString(2)
-              .padStart(8, "0");
+            randomNumber =""
+            let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+            let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+
+            if (practicarFallos && fallosSet.size > 0) {
+              while (!fallosSet.has(unidadBin8) && !fallosSet.has(decenaBin8)) {
+                unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+                decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+              }
+            }
+            randomNumber += decenaBin8 + unidadBin8
             binaryDigits = 4; // 2 rows of 4 binary digits each
             break;
           case "figures":
-            const form = generateForm();
-            const color = Math.floor(Math.random() * 9);
+            let form = generateShape();
+            let color = Math.floor(Math.random() * 9);
+
+            if (practicarFallos) {
+              form = fallosSet.size > 0 ? getRandomElementFromSet(fallosSet) : generateShape()
+              color = getRandomElementFromSet(coloresSet)
+            }
+
             randomNumber += `${form}${color}`;
 
-            const imgElement = document.createElement("img");
-            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
-            imgElement.alt = randomNumber;
-            numberElement.appendChild(imgElement);
             if (muestraCasillaALaVez) {
               const wordElement = document.createElement("div");
               let wordIdx = randomNumber % casillero.length;
@@ -215,12 +301,27 @@ document.addEventListener("DOMContentLoaded", function () {
               wordElement.classList.add("word");
               numberElement.appendChild(wordElement);
             }
+
+            const imgElement = document.createElement("img");
+            imgElement.src = preloadedImages[parseInt(randomNumber)].src;
+            imgElement.alt = randomNumber;
+            numberElement.appendChild(imgElement);
+
             break;
           default:
             if (i > 1) {
               randomNumber += " · ";
             }
-            randomNumber += Math.floor(Math.random() * 100)
+            let unidadDecimal = Math.floor(Math.random() * 10)
+            let decenaDecimal = Math.floor(Math.random() * 10)
+            if (practicarFallos && fallosSet.size > 0) {
+              while (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)) {
+                unidadDecimal = Math.floor(Math.random() * 10)
+                decenaDecimal = Math.floor(Math.random() * 10)
+              }
+            }
+            const numero = new Number(decenaDecimal * 10 + unidadDecimal)
+            randomNumber += (numero)
               .toString()
               .padStart(2, "0");
         }
@@ -229,12 +330,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (muestraCasillaALaVez && format !== "figures") {
         const wordElement = document.createElement("div");
-        console.log("Random number", randomNumber)
+
         let wordIdx = randomNumber % casillero.length;
         if (format.includes("bin")) {
           wordIdx = parseInt(randomNumber, 2);
           const arriba = randomNumber.slice(0, 3)
-          const  abajo = randomNumber.slice(3)
+          const abajo = randomNumber.slice(3)
           const ai = bin_to_int_map.get(arriba)
           const abajo_int = bin_to_int_map.get(abajo)
           wordIdx = ai * 10 + abajo_int
@@ -242,27 +343,24 @@ document.addEventListener("DOMContentLoaded", function () {
         wordElement.textContent = casillero[wordIdx];
         wordElement.classList.add("word");
         wordElement.classList.add("bottom");
-      wordElement.style.fontSize = "30px"; // Apply font size
+        wordElement.style.fontSize = "40px"; // Apply font size
         numberElement.appendChild(wordElement);
       }
 
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
         const rows = Math.ceil(randomNumber.length / binaryDigits);
-        console.log("Rows", rows)
         for (let i = 0; i < rows; i++) {
           const rowElement = document.createElement("div");
           rowElement.classList.add("binary-row");
           const start = i * binaryDigits;
           const end = start + binaryDigits;
-          console.log("Random number", randomNumber)
           rowElement.textContent = randomNumber.slice(start, end);
           numberElement.appendChild(rowElement);
         }
       } else if (format === "decimal") {
         numberElement.textContent = randomNumber;
       }
-
 
       setTimeout(function () {
         numbersContainer.removeChild(numberElement);
