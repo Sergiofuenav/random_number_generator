@@ -140,6 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
   const boldCheckbox = document.getElementById("bold");
+
+  // Muestra casillero aleatoriamente (controlando el porcentaje)
   const muestraCasillaElement = document.getElementById("casillero");
 
   let interval;
@@ -233,16 +235,14 @@ document.addEventListener("DOMContentLoaded", function () {
           wordIdx = parseInt(randomNumber, 2);
           const arriba = randomNumber.slice(0, 3)
           const  abajo = randomNumber.slice(3)
-          console.log("Arriba", arriba)
-          console.log("Abajo", abajo)
           const ai = bin_to_int_map.get(arriba)
           const abajo_int = bin_to_int_map.get(abajo)
-          console.log(ai, abajo_int)
           wordIdx = ai * 10 + abajo_int
         }
-          console.log("wordIdx", wordIdx)
         wordElement.textContent = casillero[wordIdx];
         wordElement.classList.add("word");
+        wordElement.classList.add("bottom");
+      wordElement.style.fontSize = "30px"; // Apply font size
         numberElement.appendChild(wordElement);
       }
 
