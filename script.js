@@ -389,7 +389,6 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.appendChild(wordElement);
       }
 
-      if (format === "decimal" && randomNumber !== "00" || format === "binary6" && randomNumber !== "000000") {
         if (muestraImagenesALaVez && format !== "figures") {
           const imgElement = document.createElement("img");
           let wordIdx = parseInt(randomNumber)
@@ -407,13 +406,13 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.alt = randomNumber;
 
           imgElement.style.display = 'block';  // Replace 200px with your desired width
-          imgElement.style.width = '200px';  // Replace 200px with your desired width
+          imgElement.style.width = '250px';  // Replace 200px with your desired width
+          imgElement.style.height = '250px';  // Replace 200px with your desired width
 
           // Optionally, you can add object-fit to preserve the aspect ratio
           imgElement.style.objectFit = 'cover';
 
           numberElement.appendChild(imgElement);
-        }
       }
 
       setTimeout(function () {
