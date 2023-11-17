@@ -259,6 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const numberElement = document.createElement("div");
       numberElement.style.fontSize = `${fontSize}px`; // Apply font size
       numberElement.classList.add("number");
+
       numbersContainer.appendChild(numberElement);
 
       for (let i = 1; i <= numPairs; ++i) {
@@ -339,25 +340,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       numbers.push(randomNumber);
 
-      if (muestraCasillaALaVez && format !== "figures") {
-        const wordElement = document.createElement("div");
-
-        let wordIdx = randomNumber % casillero.length;
-        if (format.includes("bin")) {
-          wordIdx = parseInt(randomNumber, 2);
-          const arriba = randomNumber.slice(0, 3)
-          const abajo = randomNumber.slice(3)
-          const ai = bin_to_int_map.get(arriba)
-          const abajo_int = bin_to_int_map.get(abajo)
-          wordIdx = ai * 10 + abajo_int
-        }
-        wordElement.textContent = casillero[wordIdx];
-        wordElement.classList.add("word");
-        wordElement.classList.add("bottom");
-        wordElement.style.fontSize = "40px"; // Apply font size
-        numberElement.appendChild(wordElement);
-
-      }
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
         const rows = Math.ceil(randomNumber.length / binaryDigits);
@@ -373,7 +355,26 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.textContent = randomNumber;
       }
 
-      console.log(randomNumber)
+      if (muestraCasillaALaVez && format !== "figures") {
+        const wordElement = document.createElement("div");
+
+        let wordIdx = randomNumber % casillero.length;
+        if (format.includes("bin")) {
+          wordIdx = parseInt(randomNumber, 2);
+          const arriba = randomNumber.slice(0, 3)
+          const abajo = randomNumber.slice(3)
+          const ai = bin_to_int_map.get(arriba)
+          const abajo_int = bin_to_int_map.get(abajo)
+          wordIdx = ai * 10 + abajo_int
+        }
+        wordElement.textContent = casillero[wordIdx];
+        console.log(wordElement.textContent)
+        wordElement.classList.add("word");
+        wordElement.style.fontSize = "40px"; // Apply font size
+
+        numberElement.appendChild(wordElement);
+      }
+
       if (format === "decimal" && randomNumber !== "00" || format === "binary6" && randomNumber !== "000000") {
         if (muestraImagenesALaVez && format !== "figures") {
           const imgElement = document.createElement("img");
@@ -387,8 +388,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const abajo_int = bin_to_int_map.get(abajo)
             wordIdx = ai * 10 + abajo_int
           }
-
-          console.log("Word idx", wordIdx)
 
           imgElement.src = preloadedImagesCasillero[wordIdx].src;
           imgElement.alt = randomNumber;
