@@ -2,7 +2,7 @@ const casillero = [
   "Hierro",
   "Rata",
   "Rino",
-  "Rama",
+  "Remo",
   "Roca",
   "Rulo",
   "Rosa",
@@ -50,7 +50,7 @@ const casillero = [
   "Coche",
   "Copa",
   "Lira",
-  "Late",
+  "Lata",
   "Lana",
   "Lima",
   "Loco",
@@ -74,7 +74,7 @@ const casillero = [
   "Faena",
   "Fama",
   "Foca",
-  "Fila",
+  "Filo",
   "Foso",
   "Fofo",
   "Ficha",
@@ -92,12 +92,12 @@ const casillero = [
   "Bar",
   "Puta",
   "Poni",
-  "Puma",
+  "Pum",
   "Buque",
   "Bola",
   "Vaso",
   "Bofia",
-  "Bach",
+  "Bache",
   "Papa",
 ];
 
@@ -130,15 +130,27 @@ for (let i = 0; i < 100; i++) {
   preloadedFigures.push(img);
 }
 
-const preloadedImagesCasillero = [null];
+const preloadedImagesCasilleroSergio = [null];
+for (let i = 0; i < 100; i++) {
+  const img = new Image();
+  const imageName = i.toString().padStart(2, "0"); // Format the image name
+  img.src = `imagenes_casillero_sergio/${imageName}.webp`; // Adjust the path based on your images' actual location
+  preloadedImagesCasilleroSergio.push(img);
+}
+
+const preloadedImagesCasilleroEkhi = [null];
 // Falta la imagen para el 00
 for (let i = 1; i < 100; i++) {
   const img = new Image();
   const imageName = i.toString().padStart(2, "0"); // Format the image name
-  img.src = `imagenes_casillero/${imageName}.webp`; // Adjust the path based on your images' actual location
-  preloadedImagesCasillero.push(img);
+  img.src = `imagenes_casillero_ekhi/${imageName}.webp`; // Adjust the path based on your images' actual location
+  preloadedImagesCasilleroEkhi.push(img);
 }
-console.log(preloadedImagesCasillero)
+
+const casilleros = new Map([
+  ["sergio", preloadedImagesCasilleroSergio],
+  ["ekhi", preloadedImagesCasilleroEkhi],
+])
 
 function generateShape() {
   const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
@@ -172,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const amountInput = document.getElementById("amount");
   const numPairsInput = document.getElementById("numPairs");
   const formatSelect = document.getElementById("format");
+  const usuarioSelect = document.getElementById("usuario");
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
@@ -233,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const showTime = parseInt(showTimeInput.value);
     const amount = parseInt(amountInput.value);
     const format = formatSelect.value; // Fetch the selected format
+    const usuario = usuarioSelect.value
 
     numbersContainer.innerHTML = ""; // Clear previous numbers
     let counter = 0;
@@ -389,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
             wordIdx = ai * 10 + abajo_int
           }
 
-          imgElement.src = preloadedImagesCasillero[wordIdx].src;
+          imgElement.src = casilleros.get(usuario)[wordIdx].src;
           imgElement.alt = randomNumber;
 
           imgElement.style.display = 'block';  // Replace 200px with your desired width
