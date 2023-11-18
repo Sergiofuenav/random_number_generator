@@ -321,9 +321,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (muestraCasillaALaVez) {
               const wordElement = document.createElement("div");
               let wordIdx = randomNumber % casillero.length;
-              if (format.includes("bin")) {
-                wordIdx = parseInt(randomNumber, 2);
-              }
               wordElement.textContent = casillero[wordIdx];
               wordElement.classList.add("word");
               numberElement.appendChild(wordElement);
@@ -332,7 +329,6 @@ document.addEventListener("DOMContentLoaded", function () {
             imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
             imgElement.alt = randomNumber;
             numberElement.appendChild(imgElement);
-
             break;
           default:
             if (i > 1) {
@@ -369,6 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.textContent = randomNumber;
       }
 
+      // Casillero
       if (muestraCasillaALaVez && format !== "figures") {
         const wordElement = document.createElement("div");
 
@@ -389,7 +386,8 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.appendChild(wordElement);
       }
 
-        if (muestraImagenesALaVez && format !== "figures") {
+      // Imágenes
+        if (muestraImagenesALaVez) {
           const imgElement = document.createElement("img");
           let wordIdx = parseInt(randomNumber)
 
