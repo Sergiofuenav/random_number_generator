@@ -62,7 +62,7 @@ const casillero = [
   "Sor",
   "Seta",
   "Seno",
-  "Sumo",
+  "Suma",
   "Saco",
   "Sol",
   "Seso",
