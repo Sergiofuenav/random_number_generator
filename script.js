@@ -66,7 +66,7 @@ const casillero = [
   "Saco",
   "Sol",
   "Seso",
-  "Sofia",
+  "Sofa",
   "Soja",
   "Sapo",
   "Faro",
