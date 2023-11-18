@@ -406,8 +406,8 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.alt = randomNumber;
 
           imgElement.style.display = 'block';  // Replace 200px with your desired width
-          imgElement.style.width = '250px';  // Replace 200px with your desired width
-          imgElement.style.height = '250px';  // Replace 200px with your desired width
+          imgElement.style.width = '350px';  // Replace 200px with your desired width
+          imgElement.style.height = '350px';  // Replace 200px with your desired width
 
           // Optionally, you can add object-fit to preserve the aspect ratio
           imgElement.style.objectFit = 'cover';
