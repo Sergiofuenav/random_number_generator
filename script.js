@@ -130,7 +130,7 @@ for (let i = 0; i < 100; i++) {
   preloadedFigures.push(img);
 }
 
-const preloadedImagesCasilleroSergio = [null];
+const preloadedImagesCasilleroSergio = [];
 for (let i = 0; i < 100; i++) {
   const img = new Image();
   const imageName = i.toString().padStart(2, "0"); // Format the image name
