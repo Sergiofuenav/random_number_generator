@@ -49,7 +49,7 @@ const casillero = [
   "Cafe",
   "Coche",
   "Copa",
-  "Lira",
+  "Loro",
   "Lata",
   "Lana",
   "Lima",
