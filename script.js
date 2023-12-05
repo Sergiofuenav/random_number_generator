@@ -68,7 +68,7 @@ const casillero = [
   "Seso",
   "Sofa",
   "Soja",
-  "Sapo",
+  "Sebo",
   "Faro",
   "Foto",
   "Faena",
