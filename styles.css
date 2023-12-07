@@ -82,7 +82,6 @@ button:hover {
 .binary-row {
   display: flex; /* Use flex display for the rows */
   margin: 5px;
-  font-weight: bold;
 }
 
 .binary-digit {

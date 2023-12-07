@@ -325,6 +325,24 @@ document.addEventListener("DOMContentLoaded", function () {
               wordElement.classList.add("word");
               numberElement.appendChild(wordElement);
             }
+
+            if (muestraImagenesALaVez) {
+              const imgElement = document.createElement("img");
+              let wordIdx = parseInt(randomNumber)
+
+              imgElement.src = casilleros.get(usuario)[wordIdx].src;
+              imgElement.alt = randomNumber;
+
+              imgElement.style.display = 'block';  // Replace 200px with your desired width
+              imgElement.style.width = '350px';  // Replace 200px with your desired width
+              imgElement.style.height = '350px';  // Replace 200px with your desired width
+              imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
+
+              // Optionally, you can add object-fit to preserve the aspect ratio
+              imgElement.style.objectFit = 'cover';
+
+              numberElement.appendChild(imgElement);
+            }
             const imgElement = document.createElement("img");
             imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
             imgElement.alt = randomNumber;
@@ -365,28 +383,29 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.textContent = randomNumber;
       }
 
-      // Casillero
-      if (muestraCasillaALaVez && format !== "figures") {
-        const wordElement = document.createElement("div");
+      if (format !== "figures") {
+        // Casillero
+        if (muestraCasillaALaVez) {
+          const wordElement = document.createElement("div");
 
-        let wordIdx = randomNumber % casillero.length;
-        if (format.includes("bin")) {
-          wordIdx = parseInt(randomNumber, 2);
-          const arriba = randomNumber.slice(0, 3)
-          const abajo = randomNumber.slice(3)
-          const ai = bin_to_int_map.get(arriba)
-          const abajo_int = bin_to_int_map.get(abajo)
-          wordIdx = ai * 10 + abajo_int
+          let wordIdx = randomNumber % casillero.length;
+          if (format.includes("bin")) {
+            wordIdx = parseInt(randomNumber, 2);
+            const arriba = randomNumber.slice(0, 3)
+            const abajo = randomNumber.slice(3)
+            const ai = bin_to_int_map.get(arriba)
+            const abajo_int = bin_to_int_map.get(abajo)
+            wordIdx = ai * 10 + abajo_int
+          }
+          wordElement.textContent = casillero[wordIdx];
+          console.log(wordElement.textContent)
+          wordElement.classList.add("word");
+          wordElement.style.fontSize = "40px"; // Apply font size
+
+          numberElement.appendChild(wordElement);
         }
-        wordElement.textContent = casillero[wordIdx];
-        console.log(wordElement.textContent)
-        wordElement.classList.add("word");
-        wordElement.style.fontSize = "40px"; // Apply font size
 
-        numberElement.appendChild(wordElement);
-      }
-
-      // Imágenes
+        // Imágenes
         if (muestraImagenesALaVez) {
           const imgElement = document.createElement("img");
           let wordIdx = parseInt(randomNumber)
@@ -408,9 +427,10 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.style.height = '350px';  // Replace 200px with your desired width
 
           // Optionally, you can add object-fit to preserve the aspect ratio
-          imgElement.style.objectFit = 'cover';
+          // imgElement.style.objectFit = 'cover';
 
           numberElement.appendChild(imgElement);
+        }
       }
 
       setTimeout(function () {
