@@ -226,10 +226,16 @@ document.addEventListener("DOMContentLoaded", function () {
       fallos.previousElementSibling.style.display = "inline";
       colors.previousElementSibling.style.display = "inline";
     } else {
+      fallosSet = new Set()
+      console.log("Reinicializando fallos set")
       colors.style.display = "none";
       fallos.style.display = "none";
-      fallos.previouselementsibling.style.display = "none";
-      colors.previouselementsibling.style.display = "none";
+      if (fallos.previouselementsibling) {
+        fallos.previouselementsibling.style.display = "none";
+      }
+      if (colors.previouselementsibling) {
+        colors.previouselementsibling.style.display = "none";
+      }
     }
   });
 
@@ -255,7 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     interval = setInterval(function () {
       if (counter >= amount) {
         clearInterval(interval);
-        console.log(numbers);
+        console.log("Numeros", numbers);
         numbers = [];
         return;
       }
