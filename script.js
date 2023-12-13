@@ -379,7 +379,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const rows = Math.ceil(randomNumber.length / binaryDigits);
         for (let i = 0; i < rows; i++) {
           const rowElement = document.createElement("div");
-          rowElement.classList.add("binary-row");
+          // rowElement.classList.add("binary-row");
+          rowElement.classList.add("word");
           const start = i * binaryDigits;
           const end = start + binaryDigits;
           rowElement.textContent = randomNumber.slice(start, end);
