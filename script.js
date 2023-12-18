@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let numbers = [];
 
   goButton.addEventListener("click", function () {
+    console.log("Casilla ---------------------")
     const timeout = parseInt(timeoutInput.value);
     const showTime = parseInt(showTimeInput.value);
     const amount = parseInt(amountInput.value);
@@ -405,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function () {
             wordIdx = ai * 10 + abajo_int
           }
           wordElement.textContent = casillero[wordIdx];
-          console.log(wordElement.textContent)
+          console.log("Casilla", wordElement.textContent)
           wordElement.classList.add("word");
           wordElement.style.fontSize = "40px"; // Apply font size
 
