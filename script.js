@@ -188,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
+  const reducirTiempo = document.getElementById("reducirTiempo");
 
   const fallosInput = document.getElementById("fallos");
 
@@ -248,7 +249,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let numbers = [];
 
   goButton.addEventListener("click", function () {
-    console.log("Casilla ---------------------")
     const timeout = parseInt(timeoutInput.value);
     const showTime = parseInt(showTimeInput.value);
     const amount = parseInt(amountInput.value);
@@ -443,10 +443,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       setTimeout(function () {
         numbersContainer.removeChild(numberElement);
-      }, showTime);
+      },
+        reducirTiempo ? Math.max(12, showTime * Math.pow(0.8, parseInt(counter / 3))) :
+          showTime
+      );
 
       counter++;
-    }, timeout + showTime);
+    },
+      reducirTiempo ? Math.max(12, (showTime + timeout) * Math.pow(0.8, parseInt(counter / 3))) :
+        showTime + timeout);
   });
 
   stopButton.addEventListener("click", function () {
