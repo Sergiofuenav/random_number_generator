@@ -249,8 +249,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let numbers = [];
 
   goButton.addEventListener("click", function () {
-    const timeout = parseInt(timeoutInput.value);
-    const showTime = parseInt(showTimeInput.value);
+    let timeout = parseInt(timeoutInput.value);
+    let showTime = parseInt(showTimeInput.value);
     const amount = parseInt(amountInput.value);
     const format = formatSelect.value; // Fetch the selected format
     const usuario = usuarioSelect.value
@@ -265,6 +265,11 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Numeros", numbers);
         numbers = [];
         return;
+      }
+
+      if (reducirTiempo) {
+        showTime *= Math.pow(0.8, parseInt(counter / 3))
+        timeout *= Math.pow(0.8, parseInt(counter / 3))
       }
 
       let randomNumber = "";
@@ -444,14 +449,12 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(function () {
         numbersContainer.removeChild(numberElement);
       },
-        reducirTiempo ? Math.max(12, showTime * Math.pow(0.8, parseInt(counter / 3))) :
-          showTime
+        showTime
       );
 
       counter++;
     },
-      reducirTiempo ? Math.max(12, (showTime + timeout) * Math.pow(0.8, parseInt(counter / 3))) :
-        showTime + timeout);
+      showTime + timeout);
   });
 
   stopButton.addEventListener("click", function () {
