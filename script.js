@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      if (reducirTiempo) {
+      if (reducirTiempo.checked) {
         showTime *= Math.pow(0.8, parseInt(counter / 3))
         timeout *= Math.pow(0.8, parseInt(counter / 3))
       }
