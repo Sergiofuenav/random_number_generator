@@ -22,6 +22,12 @@
       <div class="row">
         <label for="numPairs">Num Pairs:</label>
         <input type="number" id="numPairs" min="1" value="1" style="width: 100px;" />
+        <label for="numRows">Num Rows:</label>
+        <input type="number" id="numRows" min="1" value="5" style="width: 100px;" />
+        <label for="numCols">Num Cols:</label>
+        <input type="number" id="numCols" min="3" max="4" value="3" style="width: 100px;" />
+        <label for="matrixSize">Matrix size:</label>
+        <input type="number" id="matrixSize" min="1" max="100" value="70" style="width: 100px;" />
         <label for="usuario">Usuario:</label>
         <select id="usuario">
           <option value="sergio">Sergio</option>
@@ -29,6 +35,7 @@
         </select>
         <label for="format">Format:</label>
         <select id="format">
+          <option value="matrices">Matrices</option>
           <option value="decimal">Decimal</option>
           <option value="binary6">Binary (6 bits)</option>
           <option value="binary8">Binary (8 bits)</option>
@@ -40,7 +47,7 @@
         <input type="checkbox" id="casillero" unchecked />
         <label for="imagenes">Imágenes:</label>
         <input type="checkbox" id="imagenes" unchecked />
-        <label for="casillero">Reducir tiempo</label>
+        <label for="reducirTiempo">Reducir tiempo</label>
         <input type="checkbox" id="reducirTiempo" unchecked />
       </div>
       <label for="practicarFallos">Fallos solo:</label>
@@ -72,6 +79,8 @@
       </div>
       <button id="goButton">Go</button>
       <button id="stopButton">Stop</button>
+      <div class="random-number-display"></div> <!-- Added for displaying the random number above the matrix -->
+
     </div>
     <div class="bottom">
       <!-- Numbers will be displayed here -->

@@ -88,3 +88,24 @@ button:hover {
   display: inline-block; /* Each binary digit gets its own block */
   padding: 5px; /* Add some spacing between digits */
 }
+
+/* Matrices */
+.random-number {
+  font-size: 24px;
+  margin-bottom: 20px; /* Spacing between the number and the matrix */
+}
+
+.matrix {
+  display: grid;
+  gap: 0; /* Remove space between rows and columns */
+  /* grid-template-columns: repeat(3, 50px); 3 columns, each 50px wide */
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 2px solid black; /* Make the border line wider */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

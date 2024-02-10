@@ -107,6 +107,7 @@ function getRandomElementFromSet(set) {
   return items[randomIndex];
 }
 
+
 const bin_to_int_map = new Map([
   ["000", 0],
   ["001", 1],
@@ -157,6 +158,33 @@ function generateShape() {
   return randomNumber === 10 ? 0 : randomNumber;
 }
 
+function generateMatrix(container, matrixSize, rows, columns = 3) {
+  container.innerHTML = ''; // Clear previous matrix
+  container.classList.add("matrix")
+  container.style.gridTemplateRows = `repeat(${rows}, ${matrixSize}px)`; // Dynamic row definition
+  container.style.gridTemplateColumns = `repeat(${columns}, ${matrixSize}px)`; // Dynamic row definition
+  container.style.gap = 0
+
+  const max_bin = Math.pow(2, columns)
+
+  for (let i = 0; i < rows; i++) {
+    const randomBinRow = Math.floor(Math.random() * max_bin).toString(2).padStart(columns, '0');
+    for (let j = 0; j < columns; j++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+
+      // Generate a 3-digit binary number and set color based on its value
+      const binaryValue = randomBinRow[j];
+      cell.style.backgroundColor = binaryValue === '1' ? 'blue' : 'white';
+      cell.style.width = `${matrixSize}px`
+      cell.style.height = `${matrixSize}px`
+
+      container.appendChild(cell);
+    }
+  }
+}
+
+
 const color_to_int_map = new Map([
   ["negro", 0],
   ["marron", 1],
@@ -183,12 +211,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const showTimeInput = document.getElementById("showTime");
   const amountInput = document.getElementById("amount");
   const numPairsInput = document.getElementById("numPairs");
+  const numRowsInput = document.getElementById("numRows");
+  const numColsInput = document.getElementById("numCols");
+  const matrixSizeInput = document.getElementById("matrixSize");
   const formatSelect = document.getElementById("format");
   const usuarioSelect = document.getElementById("usuario");
   const numbersContainer = document.querySelector(".bottom");
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
   const reducirTiempo = document.getElementById("reducirTiempo");
+
+  const numRows = 5; // Set R, the number of rows
 
   const fallosInput = document.getElementById("fallos");
 
@@ -244,6 +277,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const muestraCasillaElement = document.getElementById("casillero");
   const muestraImagenesElement = document.getElementById("imagenes");
 
+  const matrixElement = document.getElementById('matrix'); // Correctly reference the matrix container
+
   let interval;
 
   let numbers = [];
@@ -258,6 +293,9 @@ document.addEventListener("DOMContentLoaded", function () {
     numbersContainer.innerHTML = ""; // Clear previous numbers
     let counter = 0;
     const numPairs = parseInt(numPairsInput.value);
+    const numRows = parseInt(numRowsInput.value);
+    const numCols = parseInt(numColsInput.value);
+    const matrixSize = parseInt(matrixSizeInput.value)
 
     interval = setInterval(function () {
       if (counter >= amount) {
@@ -380,69 +418,79 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       numbers.push(randomNumber);
 
-      // Display binary numbers in rows
-      if (format === "binary6" || format === "binary8") {
-        const rows = Math.ceil(randomNumber.length / binaryDigits);
-        for (let i = 0; i < rows; i++) {
-          const rowElement = document.createElement("div");
-          // rowElement.classList.add("binary-row");
-          rowElement.classList.add("word");
-          const start = i * binaryDigits;
-          const end = start + binaryDigits;
-          rowElement.textContent = randomNumber.slice(start, end);
-          numberElement.appendChild(rowElement);
-        }
-      } else if (format === "decimal") {
-        numberElement.textContent = randomNumber;
-      }
+      if (format === "matrices") {
+        // Display a random number between 1 and 9
+        const randomNumberElement = document.createElement("div")
+        const randomNumber = Math.floor(Math.random() * 9) + 1;
+        randomNumberElement.textContent = randomNumber
+        randomNumberElement.style.fontSize = fontSize
+        numberElement.appendChild(randomNumberElement)
 
-      if (format !== "figures") {
-        // Casillero
-        if (muestraCasillaALaVez) {
-          const wordElement = document.createElement("div");
-
-          let wordIdx = randomNumber % casillero.length;
-          if (format.includes("bin")) {
-            wordIdx = parseInt(randomNumber, 2);
-            const arriba = randomNumber.slice(0, 3)
-            const abajo = randomNumber.slice(3)
-            const ai = bin_to_int_map.get(arriba)
-            const abajo_int = bin_to_int_map.get(abajo)
-            wordIdx = ai * 10 + abajo_int
+        const matrixElement = document.createElement("div")
+        generateMatrix(matrixElement, matrixSize, numRows, numCols);
+        numberElement.appendChild(matrixElement)
+      } else {
+        // Display binary numbers in rows
+        if (format === "binary6" || format === "binary8") {
+          const rows = Math.ceil(randomNumber.length / binaryDigits);
+          for (let i = 0; i < rows; i++) {
+            const rowElement = document.createElement("div");
+            // rowElement.classList.add("binary-row");
+            rowElement.classList.add("word");
+            const start = i * binaryDigits;
+            const end = start + binaryDigits;
+            rowElement.textContent = randomNumber.slice(start, end);
+            numberElement.appendChild(rowElement);
           }
-          wordElement.textContent = casillero[wordIdx];
-          console.log("Casilla", wordElement.textContent)
-          wordElement.classList.add("word");
-          wordElement.style.fontSize = "40px"; // Apply font size
-
-          numberElement.appendChild(wordElement);
+        } else if (format === "decimal") {
+          numberElement.textContent = randomNumber;
         }
 
-        // Imágenes
-        if (muestraImagenesALaVez) {
-          const imgElement = document.createElement("img");
-          let wordIdx = parseInt(randomNumber)
+        if (format !== "figures") {
+          // Casillero
+          if (muestraCasillaALaVez) {
+            const wordElement = document.createElement("div");
 
-          if (format.includes("bin")) {
-            wordIdx = parseInt(randomNumber, 2);
-            const arriba = randomNumber.slice(0, 3)
-            const abajo = randomNumber.slice(3)
-            const ai = bin_to_int_map.get(arriba)
-            const abajo_int = bin_to_int_map.get(abajo)
-            wordIdx = ai * 10 + abajo_int
+            let wordIdx = randomNumber % casillero.length;
+            if (format.includes("bin")) {
+              wordIdx = parseInt(randomNumber, 2);
+              const arriba = randomNumber.slice(0, 3)
+              const abajo = randomNumber.slice(3)
+              const ai = bin_to_int_map.get(arriba)
+              const abajo_int = bin_to_int_map.get(abajo)
+              wordIdx = ai * 10 + abajo_int
+            }
+            wordElement.textContent = casillero[wordIdx];
+            console.log("Casilla", wordElement.textContent)
+            wordElement.classList.add("word");
+            wordElement.style.fontSize = "40px"; // Apply font size
+
+            numberElement.appendChild(wordElement);
           }
 
-          imgElement.src = casilleros.get(usuario)[wordIdx].src;
-          imgElement.alt = randomNumber;
+          // Imágenes
+          if (muestraImagenesALaVez) {
+            const imgElement = document.createElement("img");
+            let wordIdx = parseInt(randomNumber)
 
-          imgElement.style.display = 'block';  // Replace 200px with your desired width
-          imgElement.style.width = '350px';  // Replace 200px with your desired width
-          imgElement.style.height = '350px';  // Replace 200px with your desired width
+            if (format.includes("bin")) {
+              wordIdx = parseInt(randomNumber, 2);
+              const arriba = randomNumber.slice(0, 3)
+              const abajo = randomNumber.slice(3)
+              const ai = bin_to_int_map.get(arriba)
+              const abajo_int = bin_to_int_map.get(abajo)
+              wordIdx = ai * 10 + abajo_int
+            }
 
-          // Optionally, you can add object-fit to preserve the aspect ratio
-          // imgElement.style.objectFit = 'cover';
+            imgElement.src = casilleros.get(usuario)[wordIdx].src;
+            imgElement.alt = randomNumber;
 
-          numberElement.appendChild(imgElement);
+            imgElement.style.display = 'block';  // Replace 200px with your desired width
+            imgElement.style.width = '350px';  // Replace 200px with your desired width
+            imgElement.style.height = '350px';  // Replace 200px with your desired width
+
+            numberElement.appendChild(imgElement);
+          }
         }
       }
 
