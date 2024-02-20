@@ -57,7 +57,7 @@ const casillero = [
   "Lulu",
   "Lazo",
   "Elfo",
-  "Leche",
+  "Lucha",
   "Lobo",
   "Sor",
   "Seta",
