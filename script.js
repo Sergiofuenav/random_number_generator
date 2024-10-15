@@ -92,7 +92,7 @@ const casillero = [
   "Bar",
   "Puta",
   "Poni",
-  "Pum",
+  "Puma",
   "Buque",
   "Bola",
   "Vaso",
