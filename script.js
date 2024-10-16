@@ -416,20 +416,21 @@ document.addEventListener("DOMContentLoaded", function () {
               .padStart(2, "0");
         }
       }
-      numbers.push(randomNumber);
 
       if (format === "matrices") {
         // Display a random number between 1 and 9
         const randomNumberElement = document.createElement("div")
-        const randomNumber = Math.floor(Math.random() * 9) + 1;
-        randomNumberElement.textContent = randomNumber
+        const randomIndex = Math.floor(Math.random() * 9) + 1;
+        randomNumberElement.textContent = randomIndex
         randomNumberElement.style.fontSize = fontSize
         numberElement.appendChild(randomNumberElement)
 
         const matrixElement = document.createElement("div")
         generateMatrix(matrixElement, matrixSize, numRows, numCols);
         numberElement.appendChild(matrixElement)
+        numbers.push(`${randomIndex}: ${randomNumber}`);
       } else {
+      numbers.push(randomNumber);
         // Display binary numbers in rows
         if (format === "binary6" || format === "binary8") {
           const rows = Math.ceil(randomNumber.length / binaryDigits);
