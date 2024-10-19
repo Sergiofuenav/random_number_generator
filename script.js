@@ -261,7 +261,6 @@ document.addEventListener("DOMContentLoaded", function () {
       colors.previousElementSibling.style.display = "inline";
     } else {
       fallosSet = new Set()
-      console.log("Reinicializando fallos set")
       colors.style.display = "none";
       fallos.style.display = "none";
       if (fallos.previouselementsibling) {
@@ -300,7 +299,10 @@ document.addEventListener("DOMContentLoaded", function () {
     interval = setInterval(function () {
       if (counter >= amount) {
         clearInterval(interval);
-        console.log("Numeros", numbers);
+        for (const n of numbers){
+          console.log(n);
+        }
+        console.log("------");
         numbers = [];
         return;
       }
@@ -462,7 +464,6 @@ document.addEventListener("DOMContentLoaded", function () {
               wordIdx = ai * 10 + abajo_int
             }
             wordElement.textContent = casillero[wordIdx];
-            console.log("Casilla", wordElement.textContent)
             wordElement.classList.add("word");
             wordElement.style.fontSize = "40px"; // Apply font size
 
