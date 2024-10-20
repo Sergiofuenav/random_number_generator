@@ -50,7 +50,7 @@ const casillero = [
   "Coche",
   "Copa",
   "Loro",
-  "Lata",
+  "Lote", // De productos - carro compra
   "Lana",
   "Lima",
   "Loco",
@@ -59,7 +59,7 @@ const casillero = [
   "Elfo",
   "Lucha",
   "Lobo",
-  "Sor",
+  "Ser", // o no ser - calavera
   "Seta",
   "Seno",
   "Suma",
