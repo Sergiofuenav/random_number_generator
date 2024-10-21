@@ -166,9 +166,11 @@ function generateMatrix(container, matrixSize, rows, columns = 3) {
   container.style.gap = 0
 
   const max_bin = Math.pow(2, columns)
+  let matrix = ""
 
   for (let i = 0; i < rows; i++) {
     const randomBinRow = Math.floor(Math.random() * max_bin).toString(2).padStart(columns, '0');
+    matrix += randomBinRow + "\n"
     for (let j = 0; j < columns; j++) {
       const cell = document.createElement('div');
       cell.className = 'cell';
@@ -182,6 +184,7 @@ function generateMatrix(container, matrixSize, rows, columns = 3) {
       container.appendChild(cell);
     }
   }
+  return matrix
 }
 
 
@@ -299,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
     interval = setInterval(function () {
       if (counter >= amount) {
         clearInterval(interval);
-        for (const n of numbers){
+        for (const n of numbers) {
           console.log(n);
         }
         console.log("------");
@@ -428,11 +431,12 @@ document.addEventListener("DOMContentLoaded", function () {
         numberElement.appendChild(randomNumberElement)
 
         const matrixElement = document.createElement("div")
-        generateMatrix(matrixElement, matrixSize, numRows, numCols);
+        const matrix = generateMatrix(matrixElement, matrixSize, numRows, numCols);
         numberElement.appendChild(matrixElement)
-        numbers.push(`${randomIndex}: ${randomNumber}`);
+        const nextElement = ` ${randomIndex}\n${matrix}`
+        numbers.push(nextElement);
       } else {
-      numbers.push(randomNumber);
+        numbers.push(randomNumber);
         // Display binary numbers in rows
         if (format === "binary6" || format === "binary8") {
           const rows = Math.ceil(randomNumber.length / binaryDigits);
