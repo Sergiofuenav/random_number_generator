@@ -516,6 +516,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   stopButton.addEventListener("click", function () {
+    randomIndex = 0;
     clearInterval(interval);
     numbersContainer.innerHTML = "";
   });
