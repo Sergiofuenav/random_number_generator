@@ -282,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const matrixElement = document.getElementById('matrix'); // Correctly reference the matrix container
 
   let interval;
+  let randomIndex = 0;
 
   let numbers = [];
 
@@ -425,7 +426,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (format === "matrices") {
         // Display a random number between 1 and 9
         const randomNumberElement = document.createElement("div")
-        const randomIndex = Math.floor(Math.random() * 9) + 1;
+        randomIndex +=  1;
+        randomIndex %=  10;
+        if(randomIndex === 0)
+          randomIndex = 1;
         randomNumberElement.textContent = randomIndex
         randomNumberElement.style.fontSize = fontSize
         numberElement.appendChild(randomNumberElement)
