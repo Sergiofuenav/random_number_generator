@@ -287,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let numbers = [];
 
   goButton.addEventListener("click", function () {
+    randomIndex = 0;
     let timeout = parseInt(timeoutInput.value);
     let showTime = parseInt(showTimeInput.value);
     const amount = parseInt(amountInput.value);
