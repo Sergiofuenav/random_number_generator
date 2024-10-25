@@ -241,7 +241,6 @@ document.addEventListener("DOMContentLoaded", function () {
       } else {
         coloresSet.delete(int_from_color);
       }
-      console.log("Colores set", coloresSet)
     });
   });
 
@@ -518,6 +517,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   stopButton.addEventListener("click", function () {
     randomIndex = 0;
+    numbers = []
     clearInterval(interval);
     numbersContainer.innerHTML = "";
   });
