@@ -49,7 +49,7 @@ const casillero = [
   "Cafe",
   "Coche",
   "Copa",
-  "Loro",
+  "Leroy", // Mago merlin
   "Lote", // De productos - carro compra
   "Lana",
   "Lima",
