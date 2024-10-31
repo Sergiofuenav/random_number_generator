@@ -332,10 +332,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       numbersContainer.appendChild(numberElement);
 
+      // Generate the random numbers (string)
       for (let i = 1; i <= numPairs; ++i) {
         switch (format) {
           case "binary6":
-            randomNumber = "";
+            if (i > 1) {
+              randomNumber += " · ";
+            }
 
             let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
             let decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
@@ -423,12 +426,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
+      // Render the numbers on the screen
       if (format === "matrices") {
         // Display a random number between 1 and 9
         const randomNumberElement = document.createElement("div")
-        randomIndex +=  1;
-        randomIndex %=  10;
-        if(randomIndex === 0)
+        randomIndex += 1;
+        randomIndex %= 10;
+        if (randomIndex === 0)
           randomIndex = 1;
         randomNumberElement.textContent = randomIndex
         randomNumberElement.style.fontSize = fontSize
@@ -443,14 +447,19 @@ document.addEventListener("DOMContentLoaded", function () {
         numbers.push(randomNumber);
         // Display binary numbers in rows
         if (format === "binary6" || format === "binary8") {
-          const rows = Math.ceil(randomNumber.length / binaryDigits);
-          for (let i = 0; i < rows; i++) {
+          const groups = randomNumber.split(' · ');
+
+          // Map each group to split into two 3-bit parts and transpose them
+          const result = groups.map(group => [group.slice(0, binaryDigits), group.slice(binaryDigits)]);
+
+          // Format the result as required for output
+          const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
+
+          for (let i = 0; i < rows.length; i++) {
             const rowElement = document.createElement("div");
-            // rowElement.classList.add("binary-row");
             rowElement.classList.add("word");
-            const start = i * binaryDigits;
-            const end = start + binaryDigits;
-            rowElement.textContent = randomNumber.slice(start, end);
+            const content = rows[i]
+            rowElement.textContent = content;
             numberElement.appendChild(rowElement);
           }
         } else if (format === "decimal") {
