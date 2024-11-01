@@ -304,9 +304,20 @@ document.addEventListener("DOMContentLoaded", function () {
       if (counter >= amount) {
         clearInterval(interval);
         for (const n of numbers) {
-          console.log(n);
+          if (numPairs === 1 || format !== "binary6") {
+            console.log(n)
+          } else {
+            const groups = n.split(' · ');
+            const size = 3
+            const result = groups.map(group => [group.slice(0, size), group.slice(size)]);
+            const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
+            for (let i = 0; i < rows.length; ++i) {
+              console.log(rows[i])
+            }
+            console.log("------");
+          }
         }
-        console.log("------");
+        console.log("*************")
         numbers = [];
         return;
       }
