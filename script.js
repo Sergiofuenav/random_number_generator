@@ -397,27 +397,30 @@ document.addEventListener("DOMContentLoaded", function () {
               numberElement.appendChild(wordElement);
             }
 
-            if (muestraImagenesALaVez) {
-              const imgElement = document.createElement("img");
-              let wordIdx = parseInt(randomNumber)
-
-              imgElement.src = casilleros.get(usuario)[wordIdx].src;
-              imgElement.alt = randomNumber;
-
-              imgElement.style.display = 'block';  // Replace 200px with your desired width
-              imgElement.style.width = '350px';  // Replace 200px with your desired width
-              imgElement.style.height = '350px';  // Replace 200px with your desired width
-              imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
-
-              // Optionally, you can add object-fit to preserve the aspect ratio
-              imgElement.style.objectFit = 'cover';
-
-              numberElement.appendChild(imgElement);
-            }
             const imgElement = document.createElement("img");
             imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
             imgElement.alt = randomNumber;
             numberElement.appendChild(imgElement);
+            if (muestraImagenesALaVez) {
+              setTimeout(() => {
+                numberElement.textContent = '';
+                const imgElement = document.createElement("img");
+                let wordIdx = parseInt(randomNumber)
+
+                imgElement.src = casilleros.get(usuario)[wordIdx].src;
+                imgElement.alt = randomNumber;
+
+                imgElement.style.display = 'block';  // Replace 200px with your desired width
+                imgElement.style.width = '350px';  // Replace 200px with your desired width
+                imgElement.style.height = '350px';  // Replace 200px with your desired width
+                imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
+
+                // Optionally, you can add object-fit to preserve the aspect ratio
+                imgElement.style.objectFit = 'cover';
+
+                numberElement.appendChild(imgElement);
+              }, parseInt(showTime * 0.3)); // Delay of 100ms
+            }
             break;
           default:
             if (i > 1) {
@@ -501,27 +504,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Imágenes
           if (muestraImagenesALaVez) {
-            const imgElement = document.createElement("img");
-            let wordIdx = parseInt(randomNumber)
+            setTimeout(() => {
+              numberElement.textContent = '';
 
-            if (format.includes("bin")) {
-              wordIdx = parseInt(randomNumber, 2);
-              const arriba = randomNumber.slice(0, 3)
-              const abajo = randomNumber.slice(3)
-              const ai = bin_to_int_map.get(arriba)
-              const abajo_int = bin_to_int_map.get(abajo)
-              wordIdx = ai * 10 + abajo_int
-            }
+              const imgElement = document.createElement("img");
+              let wordIdx = parseInt(randomNumber);
 
-            imgElement.src = casilleros.get(usuario)[wordIdx].src;
-            imgElement.alt = randomNumber;
+              if (format.includes("bin")) {
+                wordIdx = parseInt(randomNumber, 2);
+                const arriba = randomNumber.slice(0, 3);
+                const abajo = randomNumber.slice(3);
+                const ai = bin_to_int_map.get(arriba);
+                const abajo_int = bin_to_int_map.get(abajo);
+                wordIdx = ai * 10 + abajo_int;
+              }
 
-            imgElement.style.display = 'block';  // Replace 200px with your desired width
-            imgElement.style.width = '350px';  // Replace 200px with your desired width
-            imgElement.style.height = '350px';  // Replace 200px with your desired width
+              imgElement.src = casilleros.get(usuario)[wordIdx].src;
+              imgElement.alt = randomNumber;
 
-            numberElement.appendChild(imgElement);
+              imgElement.style.display = 'block';
+              imgElement.style.width = '350px';
+              imgElement.style.height = '350px';
+
+              numberElement.appendChild(imgElement);
+            }, parseInt(showTime * 0.3)); // Delay of 100ms
           }
+
         }
       }
 
