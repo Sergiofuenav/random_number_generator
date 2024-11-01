@@ -300,6 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const numCols = parseInt(numColsInput.value);
     const matrixSize = parseInt(matrixSizeInput.value)
 
+    // Ejecucion: muestra los numeros
     interval = setInterval(function () {
       if (counter >= amount) {
         clearInterval(interval);
@@ -322,9 +323,9 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      if (reducirTiempo.checked) {
-        showTime *= Math.pow(0.8, parseInt(counter / 3))
-        timeout *= Math.pow(0.8, parseInt(counter / 3))
+      if (reducirTiempo.checked && counter > 0 && counter % 3 === 0) {
+        showTime = parseInt(showTime * 0.8)
+        timeout = parseInt(timeout * 0.8)
       }
 
       let randomNumber = "";
