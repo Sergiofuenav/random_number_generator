@@ -3,7 +3,7 @@ const casillero = [
   "Rata",
   "Rino",
   "RAM",
-  "Roca",
+  "Rook", // Grajo
   "Rulo",
   "Rosa",
   "Rifa",
@@ -19,7 +19,7 @@ const casillero = [
   "Tufo",
   "Ducha",
   "Tuba",
-  "Noria",
+  "Honor",
   "Nata",
   "Nene",
   "Nemo",
@@ -27,7 +27,7 @@ const casillero = [
   "Nilo",
   "Anis",
   "Nife",
-  "Nicho",
+  "Niga",
   "Nube",
   "Mir",
   "Moto",
@@ -73,7 +73,7 @@ const casillero = [
   "Foto",
   "Faena",
   "Fama",
-  "Foca",
+  "Fik", // Higo
   "Filo",
   "Foso",
   "Fofo",
@@ -86,7 +86,7 @@ const casillero = [
   "Choco",
   "Chal",
   "Chess",
-  "Chufa",
+  "Gafa",
   "Gogó",
   "Chivo",
   "Bar",
@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (counter >= amount) {
         clearInterval(interval);
         for (const n of numbers) {
-          if (numPairs === 1 || format !== "binary6") {
+          if (format !== "binary6") {
             console.log(n)
           } else {
             const groups = n.split(' · ');
