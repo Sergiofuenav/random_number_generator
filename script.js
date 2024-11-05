@@ -37,7 +37,7 @@ const casillero = [
   "Miel",
   "Mesa",
   "Mafia",
-  "Mecha",
+  "Mago",
   "Mapa",
   "Cura",
   "Cohete",
@@ -74,7 +74,7 @@ const casillero = [
   "Faena",
   "Fama",
   "Fik", // Higo
-  "Filo",
+  "Fil", // Hilo 
   "Foso",
   "Fofo",
   "Ficha",
