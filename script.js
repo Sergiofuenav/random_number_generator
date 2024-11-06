@@ -10,7 +10,7 @@ const casillero = [
   "Reja",
   "Rabo",
   "Toro",
-  "Dudu",
+  "Dado",
   "Duna",
   "Time",
   "Taco",
