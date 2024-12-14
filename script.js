@@ -18,7 +18,7 @@ const casillero = [
   "Tos",
   "Tufo",
   "Ducha",
-  "Tuba",
+  "Tubo",
   "Honor",
   "Nata",
   "Nene",
