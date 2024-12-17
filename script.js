@@ -222,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
   const reducirTiempo = document.getElementById("reducirTiempo");
+  const matrixSize = parseInt(matrixSizeInput.value)
 
   const fallosInput = document.getElementById("fallos");
 
@@ -275,19 +276,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const muestraCasillaElement = document.getElementById("casillero");
   const muestraImagenesElement = document.getElementById("imagenes");
 
-  const matrixElement = document.getElementById('matrix'); // Correctly reference the matrix container
-
-  let interval;
   let randomIndex = 0;
 
   let counter = 0; // Tracks iteration count
   let running = false; // Flag to control execution state
   let numbers = []; // Stores generated numbers for later use
+  let numPairs = parseInt(numPairsInput.value)
+  let format = formatSelect.value; // Fetch the selected format
+  let usuario = usuarioSelect.value
+  let numRows = parseInt(numRowsInput.value)
+  let numCols = parseInt(numColsInput.value)
 
   function runIteration(showTime, timeout) {
     if (!running || counter >= parseInt(amountInput.value)) {
-      console.log("Execution stopped or completed");
       running = false;
+      for (const n of numbers) {
+        if (format !== "binary6") {
+          console.log(n)
+        } else {
+          const groups = n.split(' · ');
+          const size = 3
+          const result = groups.map(group => [group.slice(0, size), group.slice(size)]);
+          const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
+          for (let i = 0; i < rows.length; ++i) {
+            console.log(rows[i])
+          }
+          console.log("------");
+        }
+      }
       return;
     }
 
@@ -356,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
             color = getRandomElementFromSet(coloresSet)
           }
 
-          randomNumber += ${ form }${ color };
+          randomNumber += `${form}${color}`;
 
           if (muestraCasillaALaVez) {
             const wordElement = document.createElement("div");
@@ -425,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const matrixElement = document.createElement("div")
       const matrix = generateMatrix(matrixElement, matrixSize, numRows, numCols);
       numberElement.appendChild(matrixElement)
-      const nextElement = ${ randomIndex }\n${ matrix }
+      const nextElement = `${randomIndex}\n${matrix}`
       numbers.push(nextElement);
     } else {
       numbers.push(randomNumber);
@@ -521,7 +537,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const initialShowTime = parseInt(showTimeInput.value);
     const initialTimeout = parseInt(timeoutInput.value);
+
+    format = formatSelect.value; // Fetch the selected format
+    numRows = parseInt(numRowsInput.value)
+    numCols = parseInt(numColsInput.value)
+    usuario = usuarioSelect.value
     runIteration(initialShowTime, initialTimeout);
+
   });
 
   stopButton.addEventListener("click", function () {
@@ -529,6 +551,5 @@ document.addEventListener("DOMContentLoaded", function () {
     counter = 0;
     numbers = [];
     numbersContainer.innerHTML = "";
-    console.log("Execution stopped by user");
   });
 });
