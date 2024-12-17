@@ -187,7 +187,6 @@ function generateMatrix(container, matrixSize, rows, columns = 3) {
   return matrix
 }
 
-
 const color_to_int_map = new Map([
   ["negro", 0],
   ["marron", 1],
@@ -202,11 +201,11 @@ const color_to_int_map = new Map([
 ])
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Inicialmente no mostrar fallos
-  colors.style.display = "none";
-  fallos.style.display = "none";
-  fallos.previousElementSibling.style.display = "none";
-  colors.previousElementSibling.style.display = "none";
+  // Safely handle initial display state for optional UI elements
+  const colors = document.getElementById("colors");
+  const fallos = document.getElementById("fallos");
+  if (colors) colors.style.display = "none";
+  if (fallos) fallos.style.display = "none";
 
   const goButton = document.getElementById("goButton");
   const stopButton = document.getElementById("stopButton");
@@ -223,8 +222,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
   const reducirTiempo = document.getElementById("reducirTiempo");
-
-  const numRows = 5; // Set R, the number of rows
 
   const fallosInput = document.getElementById("fallos");
 
@@ -283,271 +280,255 @@ document.addEventListener("DOMContentLoaded", function () {
   let interval;
   let randomIndex = 0;
 
-  let numbers = [];
+  let counter = 0; // Tracks iteration count
+  let running = false; // Flag to control execution state
+  let numbers = []; // Stores generated numbers for later use
 
-  goButton.addEventListener("click", function () {
-    randomIndex = 0;
-    let timeout = parseInt(timeoutInput.value);
-    let showTime = parseInt(showTimeInput.value);
-    const amount = parseInt(amountInput.value);
-    const format = formatSelect.value; // Fetch the selected format
-    const usuario = usuarioSelect.value
+  function runIteration(showTime, timeout) {
+    if (!running || counter >= parseInt(amountInput.value)) {
+      console.log("Execution stopped or completed");
+      running = false;
+      return;
+    }
 
-    numbersContainer.innerHTML = ""; // Clear previous numbers
-    let counter = 0;
-    const numPairs = parseInt(numPairsInput.value);
-    const numRows = parseInt(numRowsInput.value);
-    const numCols = parseInt(numColsInput.value);
-    const matrixSize = parseInt(matrixSizeInput.value)
+    // Prepare dynamic time reduction logic
+    if (reducirTiempo.checked && counter > 0 && counter % 3 === 0) {
+      showTime = Math.max(50, Math.floor(showTime * 0.8)); // Prevent too short times
+      timeout = Math.max(50, Math.floor(timeout * 0.8));
+    }
 
-    // Ejecucion: muestra los numeros
-    interval = setInterval(function () {
-      if (counter >= amount) {
-        clearInterval(interval);
-        for (const n of numbers) {
-          if (format !== "binary6") {
-            console.log(n)
-          } else {
-            const groups = n.split(' · ');
-            const size = 3
-            const result = groups.map(group => [group.slice(0, size), group.slice(size)]);
-            const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
-            for (let i = 0; i < rows.length; ++i) {
-              console.log(rows[i])
-            }
-            console.log("------");
+    const fontSize = parseInt(fontSizeInput.value);
+    const numberElement = document.createElement("div");
+    numberElement.style.fontSize = `${fontSize}px`;
+    numberElement.classList.add("number");
+
+    let randomNumber = "";
+    let binaryDigits = 0;
+
+    const muestraCasillaALaVez =
+      muestraCasillaElement.checked && numPairs === 1;
+
+    const muestraImagenesALaVez =
+      muestraImagenesElement.checked && numPairs === 1;
+
+    numbersContainer.appendChild(numberElement);
+
+    // Generate the random numbers (string)
+    for (let i = 1; i <= numPairs; ++i) {
+      switch (format) {
+        case "binary6":
+          if (i > 1) {
+            randomNumber += " · ";
           }
-        }
-        console.log("*************")
-        numbers = [];
-        return;
-      }
 
-      if (reducirTiempo.checked && counter > 0 && counter % 3 === 0) {
-        showTime = parseInt(showTime * 0.8)
-        timeout = parseInt(timeout * 0.8)
-      }
+          let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+          let decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
 
-      let randomNumber = "";
-      let binaryDigits = 0;
-
-      const fontSize = parseInt(fontSizeInput.value);
-      const muestraCasillaALaVez =
-        muestraCasillaElement.checked && numPairs === 1;
-
-      const muestraImagenesALaVez =
-        muestraImagenesElement.checked && numPairs === 1;
-
-      const numberElement = document.createElement("div");
-      numberElement.style.fontSize = `${fontSize}px`; // Apply font size
-      numberElement.classList.add("number");
-
-      numbersContainer.appendChild(numberElement);
-
-      // Generate the random numbers (string)
-      for (let i = 1; i <= numPairs; ++i) {
-        switch (format) {
-          case "binary6":
-            if (i > 1) {
-              randomNumber += " · ";
+          if (practicarFallos && fallosSet.size > 0) {
+            while (!fallosSet.has(unidadBin6) && !fallosSet.has(decenaBin6)) {
+              unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+              decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
             }
-
-            let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-            let decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-
-            if (practicarFallos && fallosSet.size > 0) {
-              while (!fallosSet.has(unidadBin6) && !fallosSet.has(decenaBin6)) {
-                unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-                decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-              }
-            }
-            randomNumber += decenaBin6 + unidadBin6
-            binaryDigits = 3; // 2 rows of 3 binary digits each
-            break;
-          case "binary8":
-            randomNumber = ""
-            let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-            let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-
-            if (practicarFallos && fallosSet.size > 0) {
-              while (!fallosSet.has(unidadBin8) && !fallosSet.has(decenaBin8)) {
-                unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-                decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-              }
-            }
-            randomNumber += decenaBin8 + unidadBin8
-            binaryDigits = 4; // 2 rows of 4 binary digits each
-            break;
-          case "figures":
-            let form = generateShape();
-            let color = Math.floor(Math.random() * 9);
-
-            if (practicarFallos) {
-              form = fallosSet.size > 0 ? getRandomElementFromSet(fallosSet) : generateShape()
-              color = getRandomElementFromSet(coloresSet)
-            }
-
-            randomNumber += `${form}${color}`;
-
-            if (muestraCasillaALaVez) {
-              const wordElement = document.createElement("div");
-              let wordIdx = randomNumber % casillero.length;
-              wordElement.textContent = casillero[wordIdx];
-              wordElement.classList.add("word");
-              numberElement.appendChild(wordElement);
-            }
-
-            const imgElement = document.createElement("img");
-            imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
-            imgElement.alt = randomNumber;
-            numberElement.appendChild(imgElement);
-            if (muestraImagenesALaVez) {
-              setTimeout(() => {
-                numberElement.textContent = '';
-                const imgElement = document.createElement("img");
-                let wordIdx = parseInt(randomNumber)
-
-                imgElement.src = casilleros.get(usuario)[wordIdx].src;
-                imgElement.alt = randomNumber;
-
-                imgElement.style.display = 'block';  // Replace 200px with your desired width
-                imgElement.style.width = '350px';  // Replace 200px with your desired width
-                imgElement.style.height = '350px';  // Replace 200px with your desired width
-                imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
-
-                // Optionally, you can add object-fit to preserve the aspect ratio
-                imgElement.style.objectFit = 'cover';
-
-                numberElement.appendChild(imgElement);
-              }, parseInt(showTime * 0.3)); // Delay of 100ms
-            }
-            break;
-          default:
-            if (i > 1) {
-              randomNumber += " · ";
-            }
-            let unidadDecimal = Math.floor(Math.random() * 10)
-            let decenaDecimal = Math.floor(Math.random() * 10)
-            if (practicarFallos && fallosSet.size > 0) {
-              while (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)) {
-                unidadDecimal = Math.floor(Math.random() * 10)
-                decenaDecimal = Math.floor(Math.random() * 10)
-              }
-            }
-            const numero = new Number(decenaDecimal * 10 + unidadDecimal)
-            randomNumber += (numero)
-              .toString()
-              .padStart(2, "0");
-        }
-      }
-
-      // Render the numbers on the screen
-      if (format === "matrices") {
-        // Display a random number between 1 and 9
-        const randomNumberElement = document.createElement("div")
-        randomIndex += 1;
-        randomIndex %= 10;
-        if (randomIndex === 0)
-          randomIndex = 1;
-        randomNumberElement.textContent = randomIndex
-        randomNumberElement.style.fontSize = fontSize
-        numberElement.appendChild(randomNumberElement)
-
-        const matrixElement = document.createElement("div")
-        const matrix = generateMatrix(matrixElement, matrixSize, numRows, numCols);
-        numberElement.appendChild(matrixElement)
-        const nextElement = ` ${randomIndex}\n${matrix}`
-        numbers.push(nextElement);
-      } else {
-        numbers.push(randomNumber);
-        // Display binary numbers in rows
-        if (format === "binary6" || format === "binary8") {
-          const groups = randomNumber.split(' · ');
-
-          // Map each group to split into two 3-bit parts and transpose them
-          const result = groups.map(group => [group.slice(0, binaryDigits), group.slice(binaryDigits)]);
-
-          // Format the result as required for output
-          const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
-
-          for (let i = 0; i < rows.length; i++) {
-            const rowElement = document.createElement("div");
-            rowElement.classList.add("word");
-            const content = rows[i]
-            rowElement.textContent = content;
-            numberElement.appendChild(rowElement);
           }
-        } else if (format === "decimal") {
-          numberElement.textContent = randomNumber;
-        }
+          randomNumber += decenaBin6 + unidadBin6
+          binaryDigits = 3; // 2 rows of 3 binary digits each
+          break;
+        case "binary8":
+          randomNumber = ""
+          let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+          let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
 
-        if (format !== "figures") {
-          // Casillero
+          if (practicarFallos && fallosSet.size > 0) {
+            while (!fallosSet.has(unidadBin8) && !fallosSet.has(decenaBin8)) {
+              unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+              decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+            }
+          }
+          randomNumber += decenaBin8 + unidadBin8
+          binaryDigits = 4; // 2 rows of 4 binary digits each
+          break;
+        case "figures":
+          let form = generateShape();
+          let color = Math.floor(Math.random() * 9);
+
+          if (practicarFallos) {
+            form = fallosSet.size > 0 ? getRandomElementFromSet(fallosSet) : generateShape()
+            color = getRandomElementFromSet(coloresSet)
+          }
+
+          randomNumber += ${ form }${ color };
+
           if (muestraCasillaALaVez) {
             const wordElement = document.createElement("div");
-
             let wordIdx = randomNumber % casillero.length;
-            if (format.includes("bin")) {
-              wordIdx = parseInt(randomNumber, 2);
-              const arriba = randomNumber.slice(0, 3)
-              const abajo = randomNumber.slice(3)
-              const ai = bin_to_int_map.get(arriba)
-              const abajo_int = bin_to_int_map.get(abajo)
-              wordIdx = ai * 10 + abajo_int
-            }
             wordElement.textContent = casillero[wordIdx];
             wordElement.classList.add("word");
-            wordElement.style.fontSize = "40px"; // Apply font size
-
             numberElement.appendChild(wordElement);
           }
 
-          // Imágenes
+          const imgElement = document.createElement("img");
+          imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
+          imgElement.alt = randomNumber;
+          numberElement.appendChild(imgElement);
           if (muestraImagenesALaVez) {
             setTimeout(() => {
               numberElement.textContent = '';
-
               const imgElement = document.createElement("img");
-              let wordIdx = parseInt(randomNumber);
-
-              if (format.includes("bin")) {
-                wordIdx = parseInt(randomNumber, 2);
-                const arriba = randomNumber.slice(0, 3);
-                const abajo = randomNumber.slice(3);
-                const ai = bin_to_int_map.get(arriba);
-                const abajo_int = bin_to_int_map.get(abajo);
-                wordIdx = ai * 10 + abajo_int;
-              }
+              let wordIdx = parseInt(randomNumber)
 
               imgElement.src = casilleros.get(usuario)[wordIdx].src;
               imgElement.alt = randomNumber;
 
-              imgElement.style.display = 'block';
-              imgElement.style.width = '350px';
-              imgElement.style.height = '350px';
+              imgElement.style.display = 'block';  // Replace 200px with your desired width
+              imgElement.style.width = '350px';  // Replace 200px with your desired width
+              imgElement.style.height = '350px';  // Replace 200px with your desired width
+              imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
+
+              // Optionally, you can add object-fit to preserve the aspect ratio
+              imgElement.style.objectFit = 'cover';
 
               numberElement.appendChild(imgElement);
             }, parseInt(showTime * 0.3)); // Delay of 100ms
           }
+          break;
+        default:
+          if (i > 1) {
+            randomNumber += " · ";
+          }
+          let unidadDecimal = Math.floor(Math.random() * 10)
+          let decenaDecimal = Math.floor(Math.random() * 10)
+          if (practicarFallos && fallosSet.size > 0) {
+            while (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)) {
+              unidadDecimal = Math.floor(Math.random() * 10)
+              decenaDecimal = Math.floor(Math.random() * 10)
+            }
+          }
+          const numero = new Number(decenaDecimal * 10 + unidadDecimal)
+          randomNumber += (numero)
+            .toString()
+            .padStart(2, "0");
+      }
+    }
 
+    // Render the numbers on the screen
+    if (format === "matrices") {
+      // Display a random number between 1 and 9
+      const randomNumberElement = document.createElement("div")
+      randomIndex += 1;
+      randomIndex %= 10;
+      if (randomIndex === 0)
+        randomIndex = 1;
+      randomNumberElement.textContent = randomIndex
+      randomNumberElement.style.fontSize = fontSize
+      numberElement.appendChild(randomNumberElement)
+
+      const matrixElement = document.createElement("div")
+      const matrix = generateMatrix(matrixElement, matrixSize, numRows, numCols);
+      numberElement.appendChild(matrixElement)
+      const nextElement = ${ randomIndex }\n${ matrix }
+      numbers.push(nextElement);
+    } else {
+      numbers.push(randomNumber);
+      // Display binary numbers in rows
+      if (format === "binary6" || format === "binary8") {
+        const groups = randomNumber.split(' · ');
+
+        // Map each group to split into two 3-bit parts and transpose them
+        const result = groups.map(group => [group.slice(0, binaryDigits), group.slice(binaryDigits)]);
+
+        // Format the result as required for output
+        const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
+
+        for (let i = 0; i < rows.length; i++) {
+          const rowElement = document.createElement("div");
+          rowElement.classList.add("word");
+          const content = rows[i]
+          rowElement.textContent = content;
+          numberElement.appendChild(rowElement);
         }
+      } else if (format === "decimal") {
+        numberElement.textContent = randomNumber;
       }
 
-      setTimeout(function () {
-        numbersContainer.removeChild(numberElement);
-      },
-        showTime
-      );
+      if (format !== "figures") {
+        // Casillero
+        if (muestraCasillaALaVez) {
+          const wordElement = document.createElement("div");
 
-      counter++;
-    },
-      showTime + timeout);
+          let wordIdx = randomNumber % casillero.length;
+          if (format.includes("bin")) {
+            wordIdx = parseInt(randomNumber, 2);
+            const arriba = randomNumber.slice(0, 3)
+            const abajo = randomNumber.slice(3)
+            const ai = bin_to_int_map.get(arriba)
+            const abajo_int = bin_to_int_map.get(abajo)
+            wordIdx = ai * 10 + abajo_int
+          }
+          wordElement.textContent = casillero[wordIdx];
+          wordElement.classList.add("word");
+          wordElement.style.fontSize = "40px"; // Apply font size
+
+          numberElement.appendChild(wordElement);
+        }
+
+        // Imágenes
+        if (muestraImagenesALaVez) {
+          setTimeout(() => {
+            numberElement.textContent = '';
+
+            const imgElement = document.createElement("img");
+            let wordIdx = parseInt(randomNumber);
+
+            if (format.includes("bin")) {
+              wordIdx = parseInt(randomNumber, 2);
+              const arriba = randomNumber.slice(0, 3);
+              const abajo = randomNumber.slice(3);
+              const ai = bin_to_int_map.get(arriba);
+              const abajo_int = bin_to_int_map.get(abajo);
+              wordIdx = ai * 10 + abajo_int;
+            }
+
+            imgElement.src = casilleros.get(usuario)[wordIdx].src;
+            imgElement.alt = randomNumber;
+
+            imgElement.style.display = 'block';
+            imgElement.style.width = '350px';
+            imgElement.style.height = '350px';
+
+            numberElement.appendChild(imgElement);
+          }, parseInt(showTime * 0.3)); // Delay of 100ms
+        }
+
+      }
+    }
+
+
+    // Remove the element after showTime
+    setTimeout(() => {
+      numbersContainer.removeChild(numberElement);
+    }, showTime);
+
+    counter++;
+    setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
+  }
+
+  goButton.addEventListener("click", function () {
+    if (running) return; // Prevent duplicate executions
+    running = true;
+    counter = 0;
+    numbers = [];
+    numbersContainer.innerHTML = "";
+
+    const initialShowTime = parseInt(showTimeInput.value);
+    const initialTimeout = parseInt(timeoutInput.value);
+    runIteration(initialShowTime, initialTimeout);
   });
 
   stopButton.addEventListener("click", function () {
-    randomIndex = 0;
-    numbers = []
-    clearInterval(interval);
+    running = false; // Stop execution gracefully
+    counter = 0;
+    numbers = [];
     numbersContainer.innerHTML = "";
+    console.log("Execution stopped by user");
   });
 });
