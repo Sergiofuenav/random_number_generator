@@ -301,9 +301,9 @@ document.addEventListener("DOMContentLoaded", function () {
           for (let i = 0; i < rows.length; ++i) {
             console.log(rows[i])
           }
-          console.log("------");
         }
       }
+          console.log("------");
       return;
     }
 
@@ -527,8 +527,9 @@ document.addEventListener("DOMContentLoaded", function () {
     counter++;
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
+  
 
-  goButton.addEventListener("click", function () {
+  const startExecution = () => {
     if (running) return; // Prevent duplicate executions
     running = true;
     counter = 0;
@@ -539,12 +540,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const initialTimeout = parseInt(timeoutInput.value);
 
     format = formatSelect.value; // Fetch the selected format
-    numRows = parseInt(numRowsInput.value)
-    numCols = parseInt(numColsInput.value)
-    usuario = usuarioSelect.value
-    runIteration(initialShowTime, initialTimeout);
+    numRows = parseInt(numRowsInput.value);
+    numCols = parseInt(numColsInput.value);
+    usuario = usuarioSelect.value;
 
-  });
+    runIteration(initialShowTime, initialTimeout);
+  };
+
+  goButton.addEventListener("click", startExecution);
+
 
   stopButton.addEventListener("click", function () {
     running = false; // Stop execution gracefully
@@ -552,4 +556,13 @@ document.addEventListener("DOMContentLoaded", function () {
     numbers = [];
     numbersContainer.innerHTML = "";
   });
+
+    document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      startExecution();
+    }
+  });
+
+
 });
+
