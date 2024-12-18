@@ -556,7 +556,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   goButton.addEventListener("click", startExecution);
 
-
   stopButton.addEventListener("click", function () {
     running = false; // Stop execution gracefully
     counter = 0;
