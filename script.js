@@ -587,6 +587,15 @@ document.addEventListener("DOMContentLoaded", function () {
         case "s":
           stopGame()
           break;
+        case "i":
+          muestraImagenesElement.checked = !muestraImagenesElement.checked
+          break;
+        case "c":
+          muestraCasillaElement.checked = !muestraCasillaElement.checked
+          break;
+        case "t":
+          reducirTiempo.checked = !reducirTiempo.checked
+          break;
       }
     });
 });
