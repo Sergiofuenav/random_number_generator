@@ -572,6 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
         case "b":
           formatSelect.value = "binary6";
+          fontSizeInput.value = 80;
           break;
         case "f":
           formatSelect.value = "figures";
