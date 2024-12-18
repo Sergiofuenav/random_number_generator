@@ -107,6 +107,9 @@ function getRandomElementFromSet(set) {
   return items[randomIndex];
 }
 
+const WHITE_SPACES = " "
+const MULTIPLE_PAIRS_SEPARATOR = `${WHITE_SPACES}·${WHITE_SPACES}`
+
 
 const bin_to_int_map = new Map([
   ["000", 0],
@@ -334,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
       switch (format) {
         case "binary6":
           if (i > 1) {
-            randomNumber += " · ";
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR
           }
 
           let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
@@ -350,6 +353,9 @@ document.addEventListener("DOMContentLoaded", function () {
           binaryDigits = 3; // 2 rows of 3 binary digits each
           break;
         case "binary8":
+          if (i > 1) {
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR
+          }
           randomNumber = ""
           let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
           let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
@@ -409,7 +415,7 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
         default:
           if (i > 1) {
-            randomNumber += " · ";
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR
           }
           let unidadDecimal = Math.floor(Math.random() * 10)
           let decenaDecimal = Math.floor(Math.random() * 10)
@@ -447,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
       numbers.push(randomNumber);
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
-        const groups = randomNumber.split(' · ');
+        const groups = randomNumber.split(MULTIPLE_PAIRS_SEPARATOR);
 
         // Map each group to split into two 3-bit parts and transpose them
         const result = groups.map(group => [group.slice(0, binaryDigits), group.slice(binaryDigits)]);
@@ -512,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
             imgElement.style.height = '350px';
 
             numberElement.appendChild(imgElement);
-          }, parseInt(showTime * 0.3)); // Delay of 100ms
+          }, parseInt(showTime * 0.5)); // Delay of 100ms
         }
 
       }
