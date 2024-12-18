@@ -534,7 +534,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
   
-
   const startExecution = () => {
     if (running) return; // Prevent duplicate executions
     running = true;
@@ -557,18 +556,38 @@ document.addEventListener("DOMContentLoaded", function () {
   goButton.addEventListener("click", startExecution);
 
   stopButton.addEventListener("click", function () {
+    stopGame();
+  });
+  const stopGame=()=>{
     running = false; // Stop execution gracefully
     counter = 0;
     numbers = [];
     numbersContainer.innerHTML = "";
-  });
+  }
 
     document.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      startExecution();
-    }
-  });
-
-
+      switch (event.key.toLowerCase()) {
+        case "enter":
+          startExecution();
+          break;
+        case "b":
+          formatSelect.value = "binary6";
+          break;
+        case "f":
+          formatSelect.value = "figures";
+          fontSizeInput.value = 15;
+          break;
+        case "m":
+          formatSelect.value = "matrices";
+          fontSizeInput.value = 90;
+          break;
+        case "d":
+          formatSelect.value = "decimal";
+          break;
+        case "s":
+          stopGame()
+          break;
+      }
+    });
 });
 
