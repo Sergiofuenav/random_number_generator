@@ -543,6 +543,7 @@ document.addEventListener("DOMContentLoaded", function () {
     numRows = parseInt(numRowsInput.value);
     numCols = parseInt(numColsInput.value);
     usuario = usuarioSelect.value;
+    numPairs = parseInt(numPairsInput.value)
 
     runIteration(initialShowTime, initialTimeout);
   };
