@@ -306,14 +306,31 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         }
       }
-          console.log("------");
+      console.log("------");
       return;
     }
 
     // Prepare dynamic time reduction logic
-    if (reducirTiempo.checked && counter > 0 && counter % 3 === 0) {
-      showTime = Math.max(50, Math.floor(showTime * 0.8)); // Prevent too short times
-      timeout = Math.max(50, Math.floor(timeout * 0.8));
+    if (reducirTiempo.checked && counter > 0) {
+      const initialShowTime = parseInt(showTimeInput.value);
+      const initialTimeout = parseInt(timeoutInput.value);
+
+      if (counter <= 3) {
+        showTime = Math.max(1, Math.floor(initialShowTime * 1.0));
+        timeout = Math.max(1, Math.floor(initialTimeout * 1.0));
+      } else if (counter <= 6) {
+        showTime = Math.max(1, Math.floor(initialShowTime * 0.8));
+        timeout = Math.max(1, Math.floor(initialTimeout * 0.8));
+      } else if (counter <= 9) {
+        showTime = Math.max(1, Math.floor(initialShowTime * 0.6));
+        timeout = Math.max(1, Math.floor(initialTimeout * 0.6));
+      } else if (counter <= 12) {
+        showTime = Math.max(1, Math.floor(initialShowTime * 0.4));
+        timeout = Math.max(1, Math.floor(initialTimeout * 0.4));
+      } else {
+        showTime = Math.max(1, Math.floor(initialShowTime * 0.2));
+        timeout = Math.max(1, Math.floor(initialTimeout * 0.2));
+      }
     }
 
     const fontSize = parseInt(fontSizeInput.value);
@@ -410,7 +427,7 @@ document.addEventListener("DOMContentLoaded", function () {
               imgElement.style.objectFit = 'cover';
 
               numberElement.appendChild(imgElement);
-            }, parseInt(showTime * 0.3)); // Delay of 100ms
+            }, parseInt(showTime * 0.4)); // Delay of 100ms
           }
           break;
         default:
@@ -524,7 +541,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-
     // Remove the element after showTime
     setTimeout(() => {
       numbersContainer.removeChild(numberElement);
@@ -533,7 +549,7 @@ document.addEventListener("DOMContentLoaded", function () {
     counter++;
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
-  
+
   const startExecution = () => {
     if (running) return; // Prevent duplicate executions
     running = true;
@@ -558,46 +574,46 @@ document.addEventListener("DOMContentLoaded", function () {
   stopButton.addEventListener("click", function () {
     stopGame();
   });
-  const stopGame=()=>{
+  const stopGame = () => {
     running = false; // Stop execution gracefully
     counter = 0;
     numbers = [];
     numbersContainer.innerHTML = "";
   }
 
-    document.addEventListener("keydown", function (event) {
-      switch (event.key.toLowerCase()) {
-        case "enter":
-          startExecution();
-          break;
-        case "b":
-          formatSelect.value = "binary6";
-          fontSizeInput.value = 80;
-          break;
-        case "f":
-          formatSelect.value = "figures";
-          fontSizeInput.value = 15;
-          break;
-        case "m":
-          formatSelect.value = "matrices";
-          fontSizeInput.value = 90;
-          break;
-        case "d":
-          formatSelect.value = "decimal";
-          break;
-        case "s":
-          stopGame()
-          break;
-        case "i":
-          muestraImagenesElement.checked = !muestraImagenesElement.checked
-          break;
-        case "c":
-          muestraCasillaElement.checked = !muestraCasillaElement.checked
-          break;
-        case "t":
-          reducirTiempo.checked = !reducirTiempo.checked
-          break;
-      }
-    });
+  document.addEventListener("keydown", function (event) {
+    switch (event.key.toLowerCase()) {
+      case "enter":
+        startExecution();
+        break;
+      case "b":
+        formatSelect.value = "binary6";
+        fontSizeInput.value = 80;
+        break;
+      case "f":
+        formatSelect.value = "figures";
+        fontSizeInput.value = 15;
+        break;
+      case "m":
+        formatSelect.value = "matrices";
+        fontSizeInput.value = 90;
+        break;
+      case "d":
+        formatSelect.value = "decimal";
+        break;
+      case "s":
+        stopGame()
+        break;
+      case "i":
+        muestraImagenesElement.checked = !muestraImagenesElement.checked
+        break;
+      case "c":
+        muestraCasillaElement.checked = !muestraCasillaElement.checked
+        break;
+      case "t":
+        reducirTiempo.checked = !reducirTiempo.checked
+        break;
+    }
+  });
 });
 
