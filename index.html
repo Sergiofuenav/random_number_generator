@@ -54,6 +54,12 @@
       <input type="checkbox" id="practicarFallos" unchecked />
       <label for="fallos">Digitos (o lados para figuras):</label>
       <input type="text" id="fallos" pattern="[0-9]+(,[0-9]+)*" placeholder="Separados por comas" />
+      <div class="row">
+        <label for="minValue">Min Value:</label>
+        <input type="number" id="minValue" min="0" max="99" value="0" style="width: 100px;" />
+        <label for="maxValue">Max Value:</label>
+        <input type="number" id="maxValue" min="0" max="99" value="99" style="width: 100px;" />
+      </div>
       <div id="colors" class="row">
         <label for="colors">Colores:</label>
         <input type="checkbox" id="color_negro" name="color" value="negro" checked />

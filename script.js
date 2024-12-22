@@ -226,6 +226,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const practicarFallos = document.getElementById("practicarFallos");
   const reducirTiempo = document.getElementById("reducirTiempo");
   const matrixSize = parseInt(matrixSizeInput.value)
+  const minRangeInput = document.getElementById("minValue");
+  const maxRangeInput = document.getElementById("maxValue");
+  let minRange = 0
+  let maxRange = 99
 
   const fallosInput = document.getElementById("fallos");
 
@@ -434,15 +438,15 @@ document.addEventListener("DOMContentLoaded", function () {
           if (i > 1) {
             randomNumber += MULTIPLE_PAIRS_SEPARATOR
           }
-          let unidadDecimal = Math.floor(Math.random() * 10)
-          let decenaDecimal = Math.floor(Math.random() * 10)
-          if (practicarFallos && fallosSet.size > 0) {
-            while (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)) {
-              unidadDecimal = Math.floor(Math.random() * 10)
-              decenaDecimal = Math.floor(Math.random() * 10)
-            }
+          let unidadDecimal = Math.floor(Math.random() * 10);
+          let decenaDecimal = Math.floor(Math.random() * 10);
+          let numero = decenaDecimal * 10 + unidadDecimal;
+
+          while (numero < minRange || numero > maxRange || (practicarFallos && fallosSet.size > 0 && (!fallosSet.has(unidadDecimal) || !fallosSet.has(decenaDecimal)))) {
+            unidadDecimal = Math.floor(Math.random() * 10);
+            decenaDecimal = Math.floor(Math.random() * 10);
+            numero = decenaDecimal * 10 + unidadDecimal;
           }
-          const numero = new Number(decenaDecimal * 10 + unidadDecimal)
           randomNumber += (numero)
             .toString()
             .padStart(2, "0");
@@ -565,6 +569,9 @@ document.addEventListener("DOMContentLoaded", function () {
     numCols = parseInt(numColsInput.value);
     usuario = usuarioSelect.value;
     numPairs = parseInt(numPairsInput.value)
+
+    minRange = parseInt(minRangeInput.value)
+    maxRange = parseInt(maxRangeInput.value)
 
     runIteration(initialShowTime, initialTimeout);
   };
