@@ -484,7 +484,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (let i = 0; i < rows.length; i++) {
           const rowElement = document.createElement("div");
-          rowElement.classList.add("word");
           const content = rows[i]
           rowElement.textContent = content;
           numberElement.appendChild(rowElement);
