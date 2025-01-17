@@ -3,7 +3,7 @@ const casillero = [
   "Rata",
   "Rino",
   "RAM",
-  "Rook", // Grajo
+  "Roca",
   "Rulo",
   "Rosa",
   "Rifa",
@@ -49,7 +49,7 @@ const casillero = [
   "Cafe",
   "Coche",
   "Copa",
-  "Leroy", // Mago merlin
+  "Loro", 
   "Lote", // De productos - carro compra
   "Lana",
   "Lima",
@@ -59,7 +59,7 @@ const casillero = [
   "Elfo",
   "Lucha",
   "Lobo",
-  "Ser", // o no ser - calavera
+  "Sor", 
   "Seta",
   "Seno",
   "Suma",
@@ -68,13 +68,13 @@ const casillero = [
   "Seso",
   "Sofa",
   "Soja",
-  "Zipo", // Mechero zippo
+  "Zipo",
   "Faro",
   "Foto",
   "Faena",
   "Fama",
-  "Fik", // Higo
-  "Fil", // Hilo 
+  "Foca",
+  "Filo", 
   "Foso",
   "Fofo",
   "Ficha",
