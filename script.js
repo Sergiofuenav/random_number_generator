@@ -49,7 +49,7 @@ const casillero = [
   "Cafe",
   "Coche",
   "Copa",
-  "Loro", 
+  "Loro",
   "Lote", // De productos - carro compra
   "Lana",
   "Lima",
@@ -59,7 +59,7 @@ const casillero = [
   "Elfo",
   "Lucha",
   "Lobo",
-  "Sor", 
+  "Sor",
   "Seta",
   "Seno",
   "Suma",
@@ -74,7 +74,7 @@ const casillero = [
   "Faena",
   "Fama",
   "Foca",
-  "Filo", 
+  "Filo",
   "Foso",
   "Fofo",
   "Ficha",
@@ -216,6 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const showTimeInput = document.getElementById("showTime");
   const amountInput = document.getElementById("amount");
   const numPairsInput = document.getElementById("numPairs");
+  const numPairsLabel = document.querySelector("label[for='numPairs']");
   const numRowsInput = document.getElementById("numRows");
   const numColsInput = document.getElementById("numCols");
   const matrixSizeInput = document.getElementById("matrixSize");
@@ -225,13 +226,58 @@ document.addEventListener("DOMContentLoaded", function () {
   const fontSizeInput = document.getElementById("fontSize");
   const practicarFallos = document.getElementById("practicarFallos");
   const reducirTiempo = document.getElementById("reducirTiempo");
-  const matrixSize = parseInt(matrixSizeInput.value)
   const minRangeInput = document.getElementById("minValue");
   const maxRangeInput = document.getElementById("maxValue");
-  let minRange = 0
-  let maxRange = 99
+  const minValueLabel = document.querySelector("label[for='minValue']");
+  const maxValueLabel = document.querySelector("label[for='maxValue']");
+
+  let minRange = 0;
+  let maxRange = 99;
+
+  // Ensure correct elements are selected
+  const numRowsLabel = document.querySelector("label[for='numRows']");
+  const numColsLabel = document.querySelector("label[for='numCols']");
+  const matrixSizeLabel = document.querySelector("label[for='matrixSize']");
+
+  const colorsContainer = document.getElementById("colors");
+
+  const toggleMatrixSettings = () => {
+    if (!formatSelect) return;
+
+    const isMatrices = formatSelect.value === "matrices";
+    const isFigures = formatSelect.value === "figures";
+
+    // Show/Hide only the necessary fields & labels
+    numRowsInput.style.display = isMatrices ? "inline-block" : "none";
+    numColsInput.style.display = isMatrices ? "inline-block" : "none";
+    matrixSizeInput.style.display = isMatrices ? "inline-block" : "none";
+
+    numRowsLabel.style.display = isMatrices ? "inline-block" : "none";
+    numColsLabel.style.display = isMatrices ? "inline-block" : "none";
+    matrixSizeLabel.style.display = isMatrices ? "inline-block" : "none";
+
+    numPairsInput.style.display = isMatrices || isFigures ? "none" : "inline-block";
+    numPairsLabel.style.display = isMatrices || isFigures ? "none" : "inline-block";
+
+    const isDecimal = formatSelect.value === "decimal";
+
+    // Show/Hide Min & Max Value fields if NOT Decimal
+    minRangeInput.style.display = isDecimal ? "inline-block" : "none";
+    maxRangeInput.style.display = isDecimal ? "inline-block" : "none";
+    minValueLabel.style.display = isDecimal ? "inline-block" : "none";
+    maxValueLabel.style.display = isDecimal ? "inline-block" : "none";
+
+    const isFallosChecked = practicarFallos.checked;
+    colorsContainer.style.display = isFigures && isFallosChecked ? "inline-block" : "none";
+  };
+
+  if (formatSelect) {
+    formatSelect.addEventListener("change", toggleMatrixSettings);
+    toggleMatrixSettings(); // Run once on load to set initial state
+  }
 
   const fallosInput = document.getElementById("fallos");
+  colorsContainer.style.display = "none"
 
   let coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
   let fallosSet = new Set();
@@ -262,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   practicarFallos.addEventListener("change", function () {
     if (practicarFallos.checked) {
-      colors.style.display = "inline";
+      colors.style.display = "figures" === formatSelect.value ? "inline" : "none";
       fallos.style.display = "inline";
       fallos.previousElementSibling.style.display = "inline";
       colors.previousElementSibling.style.display = "inline";
@@ -621,5 +667,5 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
     }
   });
-});
 
+});
