@@ -134,17 +134,16 @@ button:hover {
 
 /* General Grid Styling */
 #lastAttemptGrid {
-  position: fixed;
+  position: absolute;
   top: 10rem;
   /* Adjust based on height of top div */
   left: 0;
   right: 0;
+  bottom: 0;
   padding: 3rem;
   text-align: center;
   background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow-y: auto;
 }
 
 /* Responsive Grid */
