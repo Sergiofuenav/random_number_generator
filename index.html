@@ -10,85 +10,88 @@
 
 <body>
   <div class="container">
-    <div class="top">
-      <div class="row">
-        <label for="timeout">Timeout (ms):</label>
-        <input type="number" id="timeout" min="0" value="120" style="width: 50px;" />
-        <label for="showTime">Show Time (ms):</label>
-        <input type="number" id="showTime" min="0" value="120" style="width: 50px;" />
+    <div>
+      <div class="top">
+        <div class="row">
+          <label for="timeout">Timeout (ms):</label>
+          <input type="number" id="timeout" min="0" value="120" style="width: 50px;" />
+          <label for="showTime">Show Time (ms):</label>
+          <input type="number" id="showTime" min="0" value="120" style="width: 50px;" />
+        </div>
+        <div class="row">
+          <label for="amount">Amount:</label>
+          <input type="number" id="amount" min="1" value="60" style="width: 50px;" />
+          <label for="numPairs">Num Pairs:</label>
+          <input type="number" id="numPairs" min="1" value="1" style="width: 50px;" />
+          <label for="minValue">Min Value:</label>
+          <input type="number" id="minValue" min="0" max="99" value="0" style="width: 50px;" />
+          <label for="maxValue">Max Value:</label>
+          <input type="number" id="maxValue" min="0" max="99" value="99" style="width: 50px;" />
+          <label for="numRows">Num Rows:</label>
+          <input type="number" id="numRows" min="1" value="5" style="width: 50px;" />
+          <label for="numCols">Num Cols:</label>
+          <input type="number" id="numCols" min="3" max="4" value="3" style="width: 50px;" />
+          <label for="matrixSize">Matrix size:</label>
+          <input type="number" id="matrixSize" min="1" max="100" value="60" style="width: 50px;" />
+          <label for="reviewCols">Review Columns:</label>
+          <input type="number" id="reviewCols" min="1" value="5" style="width: 50px;" />
+        </div>
+        <div class="row">
+          <label for="usuario">Usuario:</label>
+          <select id="usuario">
+            <option value="sergio">Sergio</option>
+            <option value="ekhi">Ekhi</option>
+          </select>
+          <label for="format">Format:</label>
+          <select id="format">
+            <option value="decimal">Decimal</option>
+            <option value="binary6">Binary (6 bits)</option>
+            <option value="figures">Figures</option>
+            <option value="matrices">Matrices</option>
+            <option value="binary8">Binary (8 bits)</option>
+          </select>
+          <label for="casillero">Casillero:</label>
+          <input type="checkbox" id="casillero" checked />
+          <label for="imagenes">Imágenes:</label>
+          <input type="checkbox" id="imagenes" unchecked />
+          <label for="reducirTiempo">Reducir tiempo</label>
+          <input type="checkbox" id="reducirTiempo" unchecked />
+          <label for="fontSize">Font Size:</label>
+          <input type="number" id="fontSize" min="10" value="90" style="width: 50px;" />
+        </div>
+        <label for="practicarFallos">Fallos solo:</label>
+        <input type="checkbox" id="practicarFallos" unchecked />
+        <label for="fallos">Digitos (o lados para figuras):</label>
+        <input type="text" id="fallos" pattern="[0-9]+(,[0-9]+)*" placeholder="Separados por comas" />
+        <div id="colors" class="row">
+          <label for="colors">Colores:</label>
+          <input type="checkbox" id="color_negro" name="color" value="negro" checked />
+          <label for="color_negro">Negro</label>
+          <input type="checkbox" id="color_marron" name="color" value="marron" checked />
+          <label for="color_marron">Marron</label>
+          <input type="checkbox" id="color_rojo" name="color" value="rojo" checked />
+          <label for="color_rojo">Rojo</label>
+          <input type="checkbox" id="color_naranja" name="color" value="naranja" checked />
+          <label for="color_amarillo">Naranja</label>
+          <input type="checkbox" id="color_amarillo" name="color" value="amarillo" checked />
+          <label for="color_amarillo">Amarillo</label>
+          <input type="checkbox" id="color_verde" name="color" value="verde" checked />
+          <label for="color_verde">Verde</label>
+          <input type="checkbox" id="color_azul" name="color" value="azul" checked />
+          <label for="color_azul">Azul</label>
+          <input type="checkbox" id="color_violeta" name="color" value="violeta" checked />
+          <label for="color_violeta">Violeta</label>
+          <input type="checkbox" id="color_gris" name="color" value="gris" checked />
+          <label for="color_gris">Gris</label>
+          <input type="checkbox" id="color_blanco" name="color" value="blanco" checked />
+          <label for="color_blanco">Blanco</label>
+        </div>
+        <div class="row">
+          <button id="goButton">Go</button>
+          <button id="stopButton">Stop</button>
+          <button id="checkButton">Check</button>
+        </div>
       </div>
-      <div class="row">
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" min="1" value="60" style="width: 50px;" />
-        <label for="numPairs">Num Pairs:</label>
-        <input type="number" id="numPairs" min="1" value="1" style="width: 50px;" />
-        <label for="minValue">Min Value:</label>
-        <input type="number" id="minValue" min="0" max="99" value="0" style="width: 50px;" />
-        <label for="maxValue">Max Value:</label>
-        <input type="number" id="maxValue" min="0" max="99" value="99" style="width: 50px;" />
-        <label for="numRows">Num Rows:</label>
-        <input type="number" id="numRows" min="1" value="5" style="width: 50px;" />
-        <label for="numCols">Num Cols:</label>
-        <input type="number" id="numCols" min="3" max="4" value="3" style="width: 50px;" />
-        <label for="matrixSize">Matrix size:</label>
-        <input type="number" id="matrixSize" min="1" max="100" value="60" style="width: 50px;" />
-      </div>
-      <div class="row">
-        <label for="usuario">Usuario:</label>
-        <select id="usuario">
-          <option value="sergio">Sergio</option>
-          <option value="ekhi">Ekhi</option>
-        </select>
-        <label for="format">Format:</label>
-        <select id="format">
-          <option value="decimal">Decimal</option>
-          <option value="binary6">Binary (6 bits)</option>
-          <option value="matrices">Matrices</option>
-          <option value="figures">Figures</option>
-          <option value="binary8">Binary (8 bits)</option>
-        </select>
-        <label for="casillero">Casillero:</label>
-        <input type="checkbox" id="casillero" checked />
-        <label for="imagenes">Imágenes:</label>
-        <input type="checkbox" id="imagenes" unchecked />
-        <label for="reducirTiempo">Reducir tiempo</label>
-        <input type="checkbox" id="reducirTiempo" unchecked />
-        <label for="fontSize">Font Size:</label>
-        <input type="number" id="fontSize" min="10" value="90" style="width: 50px;" />
-      </div>
-      <label for="practicarFallos">Fallos solo:</label>
-      <input type="checkbox" id="practicarFallos" unchecked />
-      <label for="fallos">Digitos (o lados para figuras):</label>
-      <input type="text" id="fallos" pattern="[0-9]+(,[0-9]+)*" placeholder="Separados por comas" />
-      <div id="colors" class="row">
-        <label for="colors">Colores:</label>
-        <input type="checkbox" id="color_negro" name="color" value="negro" checked />
-        <label for="color_negro">Negro</label>
-        <input type="checkbox" id="color_marron" name="color" value="marron" checked />
-        <label for="color_marron">Marron</label>
-        <input type="checkbox" id="color_rojo" name="color" value="rojo" checked />
-        <label for="color_rojo">Rojo</label>
-        <input type="checkbox" id="color_naranja" name="color" value="naranja" checked />
-        <label for="color_amarillo">Naranja</label>
-        <input type="checkbox" id="color_amarillo" name="color" value="amarillo" checked />
-        <label for="color_amarillo">Amarillo</label>
-        <input type="checkbox" id="color_verde" name="color" value="verde" checked />
-        <label for="color_verde">Verde</label>
-        <input type="checkbox" id="color_azul" name="color" value="azul" checked />
-        <label for="color_azul">Azul</label>
-        <input type="checkbox" id="color_violeta" name="color" value="violeta" checked />
-        <label for="color_violeta">Violeta</label>
-        <input type="checkbox" id="color_gris" name="color" value="gris" checked />
-        <label for="color_gris">Gris</label>
-        <input type="checkbox" id="color_blanco" name="color" value="blanco" checked />
-        <label for="color_blanco">Blanco</label>
-      </div>
-      <div class="row">
-        <button id="goButton">Go</button>
-        <button id="stopButton">Stop</button>
-        <button id="checkButton">Check</button>
-      </div>
-      <div class="random-number-display"></div> <!-- Added for displaying the random number above the matrix -->
       <div id="lastAttemptGrid" class="grid-container"></div>
     </div>
     <div class="bottom">

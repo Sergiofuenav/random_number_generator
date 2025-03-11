@@ -3,6 +3,7 @@ import { generateShape } from "./figures.js";
 import { generateMatrix } from "./matricex.js";
 import { getRandomElementFromSet } from "./utils.js";
 import { preloadedFigures, casilleros } from "./figures.js";
+import { displayBinaryNumbers } from "./binaries.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Safely handle initial display state for optional UI elements
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const timeoutInput = document.getElementById("timeout");
   const showTimeInput = document.getElementById("showTime");
   const amountInput = document.getElementById("amount");
+  const reviewColsInput = document.getElementById("reviewCols");
   const numPairsInput = document.getElementById("numPairs");
   const numPairsLabel = document.querySelector("label[for='numPairs']");
   const numRowsInput = document.getElementById("numRows");
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const maxRangeInput = document.getElementById("maxValue");
   const minValueLabel = document.querySelector("label[for='minValue']");
   const maxValueLabel = document.querySelector("label[for='maxValue']");
+  const lastAttemptGrid = document.getElementById("lastAttemptGrid")
 
   let minRange = 0;
   let maxRange = 99;
@@ -142,24 +145,11 @@ document.addEventListener("DOMContentLoaded", function () {
   let numRows = parseInt(numRowsInput.value)
   let numCols = parseInt(numColsInput.value)
   let matrixSize = parseInt(matrixSizeInput.value)
+  let lastGameType = format
 
   function runIteration(showTime, timeout) {
     if (!running || counter >= parseInt(amountInput.value)) {
       running = false;
-      for (const n of numbers) {
-        if (format !== "binary6") {
-          console.log(n)
-        } else {
-          const groups = n.split(' · ');
-          const size = 3
-          const result = groups.map(group => [group.slice(0, size), group.slice(size)]);
-          const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
-          for (let i = 0; i < rows.length; ++i) {
-            console.log(rows[i])
-          }
-        }
-      }
-      console.log("------");
       return;
     }
 
@@ -328,20 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
       numbers.push(randomNumber);
       // Display binary numbers in rows
       if (format === "binary6" || format === "binary8") {
-        const groups = randomNumber.split(MULTIPLE_PAIRS_SEPARATOR);
-
-        // Map each group to split into two 3-bit parts and transpose them
-        const result = groups.map(group => [group.slice(0, binaryDigits), group.slice(binaryDigits)]);
-
-        // Format the result as required for output
-        const rows = result[0].map((_, colIndex) => result.map(row => row[colIndex]).join(' · '));
-
-        for (let i = 0; i < rows.length; i++) {
-          const rowElement = document.createElement("div");
-          const content = rows[i]
-          rowElement.textContent = content;
-          numberElement.appendChild(rowElement);
-        }
+        displayBinaryNumbers(randomNumber, binaryDigits, numberElement);
       } else if (format === "decimal") {
         numberElement.textContent = randomNumber;
       }
@@ -407,17 +384,24 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
 
+  // ================== Game Execution ===================
   const startExecution = () => {
     if (running) return; // Prevent duplicate executions
+
     running = true;
+
     counter = 0;
     numbers = [];
+
     numbersContainer.innerHTML = "";
+    lastAttemptGrid.innerHTML = ""
 
     const initialShowTime = parseInt(showTimeInput.value);
     const initialTimeout = parseInt(timeoutInput.value);
 
     format = formatSelect.value; // Fetch the selected format
+
+    lastGameType = format
     numRows = parseInt(numRowsInput.value);
     numCols = parseInt(numColsInput.value);
     usuario = usuarioSelect.value;
@@ -438,10 +422,65 @@ document.addEventListener("DOMContentLoaded", function () {
   const stopGame = () => {
     running = false; // Stop execution gracefully
     counter = 0;
-    numbers = [];
     numbersContainer.innerHTML = "";
+    lastAttemptGrid.innerHTML = ""
   }
 
+  // ================== Last Attempt Grid ===================
+  const displayLastAttempt = () => {
+    lastAttemptGrid.innerHTML = ""; // Clear previous grid
+
+    let attemptData = numbers; // Fetch stored numbers
+    let format = lastGameType; // Retrieve last game's format
+
+    if (attemptData.length === 0) {
+      lastAttemptGrid.innerHTML = "<p>No hay datos para mostrar.</p>";
+      return;
+    }
+
+    const grid = document.createElement("div");
+    grid.classList.add("grid");
+    grid.style.gridTemplateColumns = `repeat(${reviewColsInput.value}, 1fr)`;
+
+    attemptData.forEach(item => {
+      const cell = document.createElement("div");
+      cell.classList.add("grid-cell");
+
+      if (format === "decimal") {
+        // Decimal: Show number as is
+        cell.textContent = item;
+      } else if (format === "binary6" || format === "binary8") {
+        displayBinaryNumbers(item, format === "binary6" ? 3 : 4, cell);
+        cell.style.display = "block"
+      } else if (format === "figures") {
+        // Figures: Reconstruct the figure
+        let figureIndex = parseInt(item);
+        const img = document.createElement("img");
+        img.src = preloadedFigures[figureIndex]?.src || "placeholder.png";
+        img.alt = `Figure ${item}`;
+        img.style.width = "250px";
+        img.style.height = "250px";
+        cell.appendChild(img);
+
+      } else if (format === "matrices") {
+        // Matrices: Reconstruct the stored matrix
+        const idx = item.indexOf("\n")
+        const matrixData = item.slice(idx).split("\n")
+        const matrixElement = document.createElement("pre");
+        generateMatrix(matrixElement, matrixSize, numRows, numCols, matrixData)
+        cell.appendChild(matrixElement);
+      }
+
+      grid.appendChild(cell);
+    });
+
+    lastAttemptGrid.appendChild(grid);
+  };
+
+  checkButton.addEventListener("click", displayLastAttempt);
+  reviewColsInput.addEventListener("change", displayLastAttempt);
+
+  // ============ Controls ================  
   document.addEventListener("keydown", function (event) {
     switch (event.key.toLowerCase()) {
       case "enter":

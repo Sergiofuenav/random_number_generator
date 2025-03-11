@@ -1,5 +1,5 @@
 
-export function generateMatrix(container, matrixSize, rows, columns = 3) {
+export function generateMatrix(container, matrixSize, rows, columns = 3, numbers = null) {
     container.innerHTML = ''; // Clear previous matrix
     container.classList.add("matrix")
     container.style.gridTemplateRows = `repeat(${rows}, ${matrixSize}px)`; // Dynamic row definition
@@ -10,7 +10,7 @@ export function generateMatrix(container, matrixSize, rows, columns = 3) {
     let matrix = ""
 
     for (let i = 0; i < rows; i++) {
-        const randomBinRow = Math.floor(Math.random() * max_bin).toString(2).padStart(columns, '0');
+        const randomBinRow = numbers ? numbers[i] : Math.floor(Math.random() * max_bin).toString(2).padStart(columns, '0');
         matrix += randomBinRow + "\n"
         for (let j = 0; j < columns; j++) {
             const cell = document.createElement('div');
