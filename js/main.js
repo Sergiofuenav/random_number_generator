@@ -428,6 +428,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ================== Last Attempt Grid ===================
   const displayLastAttempt = () => {
+    if (running) return
     lastAttemptGrid.innerHTML = ""; // Clear previous grid
 
     let attemptData = numbers; // Fetch stored numbers
