@@ -134,6 +134,7 @@ button:hover {
 
 /* General Grid Styling */
 #lastAttemptGrid {
+  display: none;
   position: absolute;
   top: 10rem;
   /* Adjust based on height of top div */

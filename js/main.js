@@ -393,6 +393,7 @@ document.addEventListener("DOMContentLoaded", function () {
     counter = 0;
     numbers = [];
 
+    lastAttemptGrid.style.display = "none";
     numbersContainer.innerHTML = "";
     lastAttemptGrid.innerHTML = ""
 
@@ -430,6 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const displayLastAttempt = () => {
     if (running) return
     lastAttemptGrid.innerHTML = ""; // Clear previous grid
+    lastAttemptGrid.style.display = "block"; // Clear previous grid
 
     let attemptData = numbers; // Fetch stored numbers
     let format = lastGameType; // Retrieve last game's format
