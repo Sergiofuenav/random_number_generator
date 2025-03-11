@@ -130,7 +130,6 @@ for (let i = 0; i < 100; i++) {
   }
   const img = new Image();
   const imageName = i.toString().padStart(2, "0"); // Format the image name
-  console.log("Image name", imageName)
   img.src = `figuras/${imageName}.png`; // Adjust the path based on your images' actual location
   preloadedFigures.push(img);
 }
