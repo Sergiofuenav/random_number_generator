@@ -130,6 +130,7 @@ for (let i = 0; i < 100; i++) {
   }
   const img = new Image();
   const imageName = i.toString().padStart(2, "0"); // Format the image name
+  console.log("Image name", imageName)
   img.src = `figuras/${imageName}.png`; // Adjust the path based on your images' actual location
   preloadedFigures.push(img);
 }
@@ -493,7 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
           let decenaDecimal = Math.floor(Math.random() * 10);
           let numero = decenaDecimal * 10 + unidadDecimal;
 
-          while (numero < minRange || numero > maxRange || (practicarFallos && fallosSet.size > 0 && (!fallosSet.has(unidadDecimal) || !fallosSet.has(decenaDecimal)))) {
+          while (numero < minRange || numero > maxRange || (practicarFallos && fallosSet.size > 0 && (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)))) {
             unidadDecimal = Math.floor(Math.random() * 10);
             decenaDecimal = Math.floor(Math.random() * 10);
             numero = decenaDecimal * 10 + unidadDecimal;
