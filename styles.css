@@ -142,6 +142,9 @@ button:hover {
   padding: 3rem;
   text-align: center;
   background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Responsive Grid */
