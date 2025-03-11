@@ -1,212 +1,14 @@
-const casillero = [
-  "Hierro",
-  "Rata",
-  "Rino",
-  "RAM",
-  "Roca",
-  "Rulo",
-  "Rosa",
-  "Rifa",
-  "Reja",
-  "Rabo",
-  "Toro",
-  "Dado",
-  "Duna",
-  "Tima",
-  "Taco",
-  "Tela",
-  "Tos",
-  "Tufo",
-  "Ducha",
-  "Tubo",
-  "Noria",
-  "Nata",
-  "Nene",
-  "Nemo",
-  "Nuca",
-  "Nilo",
-  "Anis",
-  "Nife",
-  "Niga",
-  "Nube",
-  "Mir",
-  "Moto",
-  "Mina",
-  "Momia",
-  "Hamaca",
-  "Miel",
-  "Mesa",
-  "Mafia",
-  "Mago",
-  "Mapa",
-  "Cura",
-  "Cohete",
-  "Cono",
-  "Cama",
-  "Caca",
-  "Celo",
-  "Kos",
-  "Cafe",
-  "Coche",
-  "Copa",
-  "Loro",
-  "Lote", // De productos - carro compra
-  "Lana",
-  "Lima",
-  "Loco",
-  "Lulu",
-  "Lazo",
-  "Elfo",
-  "Lucha",
-  "Lobo",
-  "Sor",
-  "Seta",
-  "Seno",
-  "Suma",
-  "Saco",
-  "Solo",
-  "Seso",
-  "Sofa",
-  "Soja",
-  "Sebo",
-  "Faro",
-  "Foto",
-  "Faena",
-  "Fama",
-  "Foca",
-  "Filo",
-  "Foso",
-  "Fofo",
-  "Ficha",
-  "Fobia",
-  "Hachero",
-  "Chita",
-  "Chan",
-  "Gema",
-  "Choco",
-  "Chal",
-  "Chess",
-  "Gafa",
-  "Gogó",
-  "Chivo",
-  "Bar",
-  "Puta",
-  "Poni",
-  "Puma",
-  "Buque",
-  "Bola",
-  "Vaso",
-  "Bofia",
-  "Bache",
-  "Papa",
-];
-
-function getRandomElementFromSet(set) {
-  const items = Array.from(set);
-  const randomIndex = Math.floor(Math.random() * items.length);
-  return items[randomIndex];
-}
-
-const WHITE_SPACES = " "
-const MULTIPLE_PAIRS_SEPARATOR = `${WHITE_SPACES}·${WHITE_SPACES}`
-
-
-const bin_to_int_map = new Map([
-  ["000", 0],
-  ["001", 1],
-  ["011", 2],
-  ["111", 3],
-  ["100", 4],
-  ["101", 5],
-  ["110", 6],
-  ["010", 9],
-])
-
-const preloadedFigures = [];
-for (let i = 0; i < 100; i++) {
-  if (i >= 10 && i < 30) {
-    preloadedFigures.push(null);
-    continue;
-  }
-  const img = new Image();
-  const imageName = i.toString().padStart(2, "0"); // Format the image name
-  img.src = `figuras/${imageName}.png`; // Adjust the path based on your images' actual location
-  preloadedFigures.push(img);
-}
-
-const preloadedImagesCasilleroSergio = [];
-for (let i = 0; i < 100; i++) {
-  const img = new Image();
-  const imageName = i.toString().padStart(2, "0"); // Format the image name
-  img.src = `imagenes_casillero_sergio/${imageName}.webp`; // Adjust the path based on your images' actual location
-  preloadedImagesCasilleroSergio.push(img);
-}
-
-const preloadedImagesCasilleroEkhi = [null];
-// Falta la imagen para el 00
-for (let i = 1; i < 100; i++) {
-  const img = new Image();
-  const imageName = i.toString().padStart(2, "0"); // Format the image name
-  img.src = `imagenes_casillero_ekhi/${imageName}.webp`; // Adjust the path based on your images' actual location
-  preloadedImagesCasilleroEkhi.push(img);
-}
-
-const casilleros = new Map([
-  ["sergio", preloadedImagesCasilleroSergio],
-  ["ekhi", preloadedImagesCasilleroEkhi],
-])
-
-function generateShape() {
-  const randomNumber = Math.floor(Math.random() * 8) + 3; // Generate number between 3 and 10
-  return randomNumber === 10 ? 0 : randomNumber;
-}
-
-function generateMatrix(container, matrixSize, rows, columns = 3) {
-  container.innerHTML = ''; // Clear previous matrix
-  container.classList.add("matrix")
-  container.style.gridTemplateRows = `repeat(${rows}, ${matrixSize}px)`; // Dynamic row definition
-  container.style.gridTemplateColumns = `repeat(${columns}, ${matrixSize}px)`; // Dynamic row definition
-  container.style.gap = 0
-
-  const max_bin = Math.pow(2, columns)
-  let matrix = ""
-
-  for (let i = 0; i < rows; i++) {
-    const randomBinRow = Math.floor(Math.random() * max_bin).toString(2).padStart(columns, '0');
-    matrix += randomBinRow + "\n"
-    for (let j = 0; j < columns; j++) {
-      const cell = document.createElement('div');
-      cell.className = 'cell';
-
-      // Generate a 3-digit binary number and set color based on its value
-      const binaryValue = randomBinRow[j];
-      cell.style.backgroundColor = binaryValue === '1' ? 'blue' : 'white';
-      cell.style.width = `${matrixSize}px`
-      cell.style.height = `${matrixSize}px`
-
-      container.appendChild(cell);
-    }
-  }
-  return matrix
-}
-
-const color_to_int_map = new Map([
-  ["negro", 0],
-  ["marron", 1],
-  ["rojo", 2],
-  ["naranja", 3],
-  ["amarillo", 4],
-  ["verde", 5],
-  ["azul", 6],
-  ["violeta", 7],
-  ["gris", 8],
-  ["blanco", 9],
-])
+import { casillero, bin_to_int_map, MULTIPLE_PAIRS_SEPARATOR, color_to_int_map } from "./constants.js";
+import { generateShape } from "./figures.js";
+import { generateMatrix } from "./matricex.js";
+import { getRandomElementFromSet } from "./utils.js";
+import { preloadedFigures, casilleros } from "./figures.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   // Safely handle initial display state for optional UI elements
   const colors = document.getElementById("colors");
   const fallos = document.getElementById("fallos");
+
   if (colors) colors.style.display = "none";
   if (fallos) fallos.style.display = "none";
 
@@ -339,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let usuario = usuarioSelect.value
   let numRows = parseInt(numRowsInput.value)
   let numCols = parseInt(numColsInput.value)
+  let matrixSize = parseInt(matrixSizeInput.value)
 
   function runIteration(showTime, timeout) {
     if (!running || counter >= parseInt(amountInput.value)) {
@@ -631,6 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
   stopButton.addEventListener("click", function () {
     stopGame();
   });
+
   const stopGame = () => {
     running = false; // Stop execution gracefully
     counter = 0;
@@ -673,5 +477,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     toggleMatrixSettings()
   });
-
 });
