@@ -447,14 +447,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
           randomNumber += `${form}${color}`;
 
-          if (muestraCasillaALaVez) {
-            const wordElement = document.createElement("div");
-            let wordIdx = randomNumber % casillero.length;
-            wordElement.textContent = casillero[wordIdx];
-            wordElement.classList.add("word");
-            numberElement.appendChild(wordElement);
-          }
-
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
           imgElement.alt = randomNumber;
@@ -462,6 +454,7 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.style.width = '250px';  // Replace 200px with your desired width
           imgElement.style.height = '250px';  // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
+
           if (muestraImagenesALaVez) {
             setTimeout(() => {
               numberElement.textContent = '';
@@ -482,6 +475,15 @@ document.addEventListener("DOMContentLoaded", function () {
               numberElement.appendChild(imgElement);
             }, parseInt(showTime * 0.4)); // Delay of 100ms
           }
+
+          if (muestraCasillaALaVez) {
+            const wordElement = document.createElement("div");
+            let wordIdx = randomNumber % casillero.length;
+            wordElement.textContent = casillero[wordIdx];
+            wordElement.classList.add("word");
+            numberElement.appendChild(wordElement);
+          }
+
           break;
         default:
           if (i > 1) {
