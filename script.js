@@ -458,6 +458,9 @@ document.addEventListener("DOMContentLoaded", function () {
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
           imgElement.alt = randomNumber;
+          imgElement.style.display = 'block';  // Replace 200px with your desired width
+          imgElement.style.width = '250px';  // Replace 200px with your desired width
+          imgElement.style.height = '250px';  // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
           if (muestraImagenesALaVez) {
             setTimeout(() => {
@@ -469,8 +472,8 @@ document.addEventListener("DOMContentLoaded", function () {
               imgElement.alt = randomNumber;
 
               imgElement.style.display = 'block';  // Replace 200px with your desired width
-              imgElement.style.width = '350px';  // Replace 200px with your desired width
-              imgElement.style.height = '350px';  // Replace 200px with your desired width
+              imgElement.style.width = '250px';  // Replace 200px with your desired width
+              imgElement.style.height = '250px';  // Replace 200px with your desired width
               imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
 
               // Optionally, you can add object-fit to preserve the aspect ratio
@@ -666,6 +669,7 @@ document.addEventListener("DOMContentLoaded", function () {
         reducirTiempo.checked = !reducirTiempo.checked
         break;
     }
+    toggleMatrixSettings()
   });
 
 });
