@@ -429,9 +429,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ================== Last Attempt Grid ===================
   const displayLastAttempt = () => {
-    if (running) return
+    if (running) return;
     lastAttemptGrid.innerHTML = ""; // Clear previous grid
-    lastAttemptGrid.style.display = "block"; // Clear previous grid
+    lastAttemptGrid.style.display = "block"; // Show the grid
 
     let attemptData = numbers; // Fetch stored numbers
     let format = lastGameType; // Retrieve last game's format
@@ -449,31 +449,81 @@ document.addEventListener("DOMContentLoaded", function () {
       const cell = document.createElement("div");
       cell.classList.add("grid-cell");
 
+      // Container to hold both the main content and "casilla"
+      const contentWrapper = document.createElement("div");
+      contentWrapper.classList.add("content-wrapper");
+
+      // Create content container for the main display
+      const contentContainer = document.createElement("div");
+      contentContainer.classList.add("content-container");
       if (format === "decimal") {
-        // Decimal: Show number as is
-        cell.textContent = item;
+        const decimal = document.createElement("p");
+        decimal.textContent = item;
+        contentContainer.appendChild(decimal);
       } else if (format === "binary6" || format === "binary8") {
-        displayBinaryNumbers(item, format === "binary6" ? 3 : 4, cell);
-        cell.style.display = "block"
+        displayBinaryNumbers(item, format === "binary6" ? 3 : 4, contentContainer);
       } else if (format === "figures") {
-        // Figures: Reconstruct the figure
         let figureIndex = parseInt(item);
         const img = document.createElement("img");
         img.src = preloadedFigures[figureIndex]?.src || "placeholder.png";
         img.alt = `Figure ${item}`;
-        img.style.width = "250px";
-        img.style.height = "250px";
-        cell.appendChild(img);
-
+        img.classList.add("figure-image");
+        contentContainer.appendChild(img);
       } else if (format === "matrices") {
-        // Matrices: Reconstruct the stored matrix
-        const idx = item.indexOf("\n")
-        const matrixData = item.slice(idx).split("\n")
+        const idx = item.indexOf("\n");
+        const matrixData = item.slice(idx).split("\n");
         const matrixElement = document.createElement("pre");
-        generateMatrix(matrixElement, matrixSize, numRows, numCols, matrixData)
-        cell.appendChild(matrixElement);
+        generateMatrix(matrixElement, matrixSize, numRows, numCols, matrixData);
+        contentContainer.appendChild(matrixElement);
       }
 
+      // Add the contentContainer inside the wrapper
+      contentWrapper.appendChild(contentContainer);
+      if (format !== "matrices") {
+        const number =
+          format.includes("binary6") ?
+            (() => {
+              // For binary6, split the 6 digits into two 3-digit chunks
+              const firstPart = item.slice(0, 3);
+              const secondPart = item.slice(3, 6);
+
+              // Convert binary chunks to decimal
+              const firstDecimal = bin_to_int_map.get(firstPart)
+              const secondDecimal = bin_to_int_map.get(secondPart)
+
+              // Compute the integer (first decimal as tens, second as units)
+              const computedInteger = firstDecimal * 10 + secondDecimal;
+
+              return computedInteger;
+            })() : parseInt(item)
+
+        const casilla = casillero[parseInt(number)]
+
+        if (muestraImagenesElement.checked) {
+          const imgElement = document.createElement("img");
+          const wordIdx = number
+
+          imgElement.src = casilleros.get(usuario)[wordIdx]?.src || null;
+          imgElement.alt = "";
+
+          imgElement.style.display = 'block';
+          imgElement.style.width = '200px';
+          imgElement.style.height = '200px';
+
+          contentWrapper.appendChild(imgElement);
+        }
+
+        // "Casilla" text div (placed below contentContainer)
+        if (muestraCasillaElement.checked) {
+          const casillaDiv = document.createElement("div");
+          casillaDiv.textContent = casilla
+          casillaDiv.classList.add("casilla-text");
+          contentWrapper.appendChild(casillaDiv);
+        }
+      }
+
+      // Append wrapper to cell
+      cell.appendChild(contentWrapper);
       grid.appendChild(cell);
     });
 
@@ -482,6 +532,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   checkButton.addEventListener("click", displayLastAttempt);
   reviewColsInput.addEventListener("change", displayLastAttempt);
+
+  document.getElementById("casillero").addEventListener("change", displayLastAttempt);
+  document.getElementById("imagenes").addEventListener("change", displayLastAttempt);
+
 
   // ============ Controls ================  
   document.addEventListener("keydown", function (event) {
@@ -505,18 +559,22 @@ document.addEventListener("DOMContentLoaded", function () {
         formatSelect.value = "decimal";
         break;
       case "s":
-        stopGame()
+        stopGame();
         break;
       case "i":
-        muestraImagenesElement.checked = !muestraImagenesElement.checked
+        muestraImagenesElement.checked = !muestraImagenesElement.checked;
+        muestraImagenesElement.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
       case "c":
-        muestraCasillaElement.checked = !muestraCasillaElement.checked
+        muestraCasillaElement.checked = !muestraCasillaElement.checked;
+        muestraCasillaElement.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
       case "t":
-        reducirTiempo.checked = !reducirTiempo.checked
+        reducirTiempo.checked = !reducirTiempo.checked;
+        reducirTiempo.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
     }
-    toggleMatrixSettings()
+    toggleMatrixSettings();
   });
+
 });
