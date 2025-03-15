@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const minValueLabel = document.querySelector("label[for='minValue']");
   const maxValueLabel = document.querySelector("label[for='maxValue']");
   const lastAttemptGrid = document.getElementById("lastAttemptGrid")
+  const randomIndexCheckbox = document.getElementById("randomIndex")
 
   let minRange = 0;
   let maxRange = 99;
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const numRowsLabel = document.querySelector("label[for='numRows']");
   const numColsLabel = document.querySelector("label[for='numCols']");
   const matrixSizeLabel = document.querySelector("label[for='matrixSize']");
+  const randomIndexLabel = document.querySelector("label[for='randomIndex']")
 
   const colorsContainer = document.getElementById("colors");
 
@@ -56,10 +58,12 @@ document.addEventListener("DOMContentLoaded", function () {
     numRowsInput.style.display = isMatrices ? "inline-block" : "none";
     numColsInput.style.display = isMatrices ? "inline-block" : "none";
     matrixSizeInput.style.display = isMatrices ? "inline-block" : "none";
+    randomIndexCheckbox.style.display = isMatrices ? "inline-block" : "none";
 
     numRowsLabel.style.display = isMatrices ? "inline-block" : "none";
     numColsLabel.style.display = isMatrices ? "inline-block" : "none";
     matrixSizeLabel.style.display = isMatrices ? "inline-block" : "none";
+    randomIndexLabel.style.display = isMatrices ? "inline-block" : "none";
 
     numPairsInput.style.display = isMatrices || isFigures ? "none" : "inline-block";
     numPairsLabel.style.display = isMatrices || isFigures ? "none" : "inline-block";
@@ -297,12 +301,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Render the numbers on the screen
     if (format === "matrices") {
-      // Display a random number between 1 and 9
+      // Display a random number between 1 and 12
       const randomNumberElement = document.createElement("div")
-      randomIndex += 1;
-      randomIndex %= 10;
-      if (randomIndex === 0)
-        randomIndex = 1;
+      if (randomIndexCheckbox.checked) {
+        // Random index entre 1 y 9 para practicar lectura
+        randomIndex = Math.floor(Math.random() * 9) + 1
+      } else {
+        randomIndex += 1;
+        randomIndex %= 13;
+        if (randomIndex === 0)
+          randomIndex = 1;
+      }
       randomNumberElement.textContent = randomIndex
       randomNumberElement.style.fontSize = fontSize
       numberElement.appendChild(randomNumberElement)
@@ -409,6 +418,8 @@ document.addEventListener("DOMContentLoaded", function () {
     minRange = parseInt(minRangeInput.value)
     maxRange = parseInt(maxRangeInput.value)
 
+    randomIndex = 0;
+
     runIteration(initialShowTime, initialTimeout);
   };
 
@@ -470,6 +481,12 @@ document.addEventListener("DOMContentLoaded", function () {
       } else if (format === "matrices") {
         const idx = item.indexOf("\n");
         const matrixData = item.slice(idx).split("\n");
+
+        // Add h3 with the value of idx
+        const idxHeader = document.createElement("h3");
+        idxHeader.textContent = item.substring(0, idx);
+        contentContainer.appendChild(idxHeader);
+
         const matrixElement = document.createElement("pre");
         generateMatrix(matrixElement, matrixSize, numRows, numCols, matrixData);
         contentContainer.appendChild(matrixElement);

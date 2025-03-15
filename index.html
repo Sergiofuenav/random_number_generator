@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Random Number Display</title>
+  <title>Generador de Números Aleatorios</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -17,26 +17,28 @@
           <input type="number" id="timeout" min="0" value="120" style="width: 50px;" />
           <label for="showTime">Show Time (ms):</label>
           <input type="number" id="showTime" min="0" value="120" style="width: 50px;" />
-          <label for="fontSize">Font Size:</label>
+          <label for="fontSize">Tamaño de Fuente:</label>
           <input type="number" id="fontSize" min="10" value="90" style="width: 50px;" />
         </div>
         <div class="row">
-          <label for="amount">Amount:</label>
+          <label for="amount">Cantidad:</label>
           <input type="number" id="amount" min="1" value="90" style="width: 50px;" />
-          <label for="numPairs">Num Pairs:</label>
+          <label for="numPairs">Número de Pares:</label>
           <input type="number" id="numPairs" min="1" value="1" style="width: 50px;" />
-          <label for="minValue">Min Value:</label>
-          <input type="number" id="minValue" min="0" max="99" value="0" style="width: 50px;" />
-          <label for="maxValue">Max Value:</label>
-          <input type="number" id="maxValue" min="0" max="99" value="99" style="width: 50px;" />
-          <label for="numRows">Num Rows:</label>
-          <input type="number" id="numRows" min="1" value="5" style="width: 50px;" />
-          <label for="numCols">Num Cols:</label>
-          <input type="number" id="numCols" min="3" max="4" value="3" style="width: 50px;" />
-          <label for="matrixSize">Matrix size:</label>
-          <input type="number" id="matrixSize" min="1" max="100" value="60" style="width: 50px;" />
-          <label for="reviewCols">Review Columns:</label>
+          <label for="reviewCols">Columnas (check):</label>
           <input type="number" id="reviewCols" min="1" value="5" style="width: 50px;" />
+          <label for="minValue">Mínimo:</label>
+          <input type="number" id="minValue" min="0" max="99" value="0" style="width: 50px;" />
+          <label for="maxValue">Máximo:</label>
+          <input type="number" id="maxValue" min="0" max="99" value="99" style="width: 50px;" />
+          <label for="numRows">Filas:</label>
+          <input type="number" id="numRows" min="1" value="5" style="width: 50px;" />
+          <label for="numCols">Columnas:</label>
+          <input type="number" id="numCols" min="3" max="4" value="3" style="width: 50px;" />
+          <label for="matrixSize">Tamaño de Matriz:</label>
+          <input type="number" id="matrixSize" min="1" max="100" value="60" style="width: 50px;" />
+          <label for="randomIndex">Índice Aleatorio:</label>
+          <input type="checkbox" id="randomIndex" checked />
         </div>
         <div class="row" style="padding: 1rem;">
           <label for="usuario">Usuario:</label>
@@ -44,31 +46,31 @@
             <option value="sergio">Sergio</option>
             <option value="ekhi">Ekhi</option>
           </select>
-          <label for="format">Format:</label>
+          <label for="format">Formato:</label>
           <select id="format">
             <option value="decimal">Decimal</option>
-            <option value="binary6">Binary (6 bits)</option>
-            <option value="figures">Figures</option>
+            <option value="binary6">Binario (6 bits)</option>
+            <option value="figures">Figuras</option>
             <option value="matrices">Matrices</option>
-            <option value="binary8">Binary (8 bits)</option>
+            <option value="binary8">Binario (8 bits)</option>
           </select>
           <label for="casillero">Casillero:</label>
           <input type="checkbox" id="casillero" checked />
           <label for="imagenes">Imágenes:</label>
           <input type="checkbox" id="imagenes" unchecked />
-          <label for="reducirTiempo">Reducir tiempo</label>
+          <label for="reducirTiempo">Reducir tiempo:</label>
           <input type="checkbox" id="reducirTiempo" unchecked />
         </div>
         <label for="practicarFallos">Fallos solo:</label>
         <input type="checkbox" id="practicarFallos" unchecked />
-        <label for="fallos">Digitos (o lados para figuras):</label>
+        <label for="fallos">Dígitos (o lados para figuras):</label>
         <input type="text" id="fallos" pattern="[0-9]+(,[0-9]+)*" placeholder="Separados por comas" />
         <div id="colors" class="row">
           <label for="colors">Colores:</label>
           <input type="checkbox" id="color_negro" name="color" value="negro" checked />
           <label for="color_negro">Negro</label>
           <input type="checkbox" id="color_marron" name="color" value="marron" checked />
-          <label for="color_marron">Marron</label>
+          <label for="color_marron">Marrón</label>
           <input type="checkbox" id="color_rojo" name="color" value="rojo" checked />
           <label for="color_rojo">Rojo</label>
           <input type="checkbox" id="color_naranja" name="color" value="naranja" checked />
@@ -95,7 +97,7 @@
       <div id="lastAttemptGrid" class="grid-container"></div>
     </div>
     <div class="bottom">
-      <!-- Numbers will be displayed here -->
+      <!-- Los números se mostrarán aquí -->
     </div>
   </div>
   <script type="module" src="js/main.js"></script>
