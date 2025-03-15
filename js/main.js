@@ -244,8 +244,6 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
           imgElement.alt = randomNumber;
           imgElement.style.display = 'block';  // Replace 200px with your desired width
-          imgElement.style.width = '250px';  // Replace 200px with your desired width
-          imgElement.style.height = '250px';  // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
 
           if (muestraImagenesALaVez) {
