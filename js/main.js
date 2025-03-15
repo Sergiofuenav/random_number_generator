@@ -250,34 +250,26 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.style.display = 'block';  // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
 
-          if (muestraImagenesALaVez) {
-            setTimeout(() => {
-              numberElement.textContent = '';
-              const imgElement = document.createElement("img");
-              let wordIdx = parseInt(randomNumber)
+          // if (muestraImagenesALaVez) {
+          //   setTimeout(() => {
+          //     numberElement.textContent = '';
+          //     const imgElement = document.createElement("img");
+          //     let wordIdx = parseInt(randomNumber)
 
-              imgElement.src = casilleros.get(usuario)[wordIdx].src;
-              imgElement.alt = randomNumber;
+          //     imgElement.src = casilleros.get(usuario)[wordIdx].src;
+          //     imgElement.alt = randomNumber;
 
-              imgElement.style.display = 'block';  // Replace 200px with your desired width
-              imgElement.style.width = '250px';  // Replace 200px with your desired width
-              imgElement.style.height = '250px';  // Replace 200px with your desired width
-              imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
+          //     imgElement.style.display = 'block';  // Replace 200px with your desired width
+          //     imgElement.style.width = '250px';  // Replace 200px with your desired width
+          //     imgElement.style.height = '250px';  // Replace 200px with your desired width
+          //     imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
 
-              // Optionally, you can add object-fit to preserve the aspect ratio
-              imgElement.style.objectFit = 'cover';
+          //     // Optionally, you can add object-fit to preserve the aspect ratio
+          //     imgElement.style.objectFit = 'cover';
 
-              numberElement.appendChild(imgElement);
-            }, parseInt(showTime * 0.4)); // Delay of 100ms
-          }
-
-          if (muestraCasillaALaVez) {
-            const wordElement = document.createElement("div");
-            let wordIdx = randomNumber % casillero.length;
-            wordElement.textContent = casillero[wordIdx];
-            wordElement.classList.add("word");
-            numberElement.appendChild(wordElement);
-          }
+          //     numberElement.appendChild(imgElement);
+          //   }, parseInt(showTime * 0.4)); // Delay of 100ms
+          // }
 
           break;
         default:
@@ -321,75 +313,53 @@ document.addEventListener("DOMContentLoaded", function () {
       numberElement.appendChild(matrixElement)
       const nextElement = `${randomIndex}\n${matrix}`
       numbers.push(nextElement);
+      randomNumber = nextElement
     } else {
       numbers.push(randomNumber);
-      // Display binary numbers in rows
-      if (format === "binary6" || format === "binary8") {
-        displayBinaryNumbers(randomNumber, binaryDigits, numberElement);
-      } else if (format === "decimal") {
-        numberElement.textContent = randomNumber;
-      }
-
-      if (format !== "figures") {
-        // Casillero
-        if (muestraCasillaALaVez) {
-          const wordElement = document.createElement("div");
-
-          let wordIdx = randomNumber % casillero.length;
-          if (format.includes("bin")) {
-            wordIdx = parseInt(randomNumber, 2);
-            const arriba = randomNumber.slice(0, 3)
-            const abajo = randomNumber.slice(3)
-            const ai = bin_to_int_map.get(arriba)
-            const abajo_int = bin_to_int_map.get(abajo)
-            wordIdx = ai * 10 + abajo_int
-          }
-          wordElement.textContent = casillero[wordIdx];
-          wordElement.classList.add("word");
-          wordElement.style.fontSize = "40px"; // Apply font size
-
-          numberElement.appendChild(wordElement);
-        }
-
-        // Imágenes
-        if (muestraImagenesALaVez) {
-          setTimeout(() => {
-            numberElement.textContent = '';
-
-            const imgElement = document.createElement("img");
-            let wordIdx = parseInt(randomNumber);
-
-            if (format.includes("bin")) {
-              wordIdx = parseInt(randomNumber, 2);
-              const arriba = randomNumber.slice(0, 3);
-              const abajo = randomNumber.slice(3);
-              const ai = bin_to_int_map.get(arriba);
-              const abajo_int = bin_to_int_map.get(abajo);
-              wordIdx = ai * 10 + abajo_int;
-            }
-
-            imgElement.src = casilleros.get(usuario)[wordIdx].src;
-            imgElement.alt = randomNumber;
-
-            imgElement.style.display = 'block';
-            imgElement.style.width = '350px';
-            imgElement.style.height = '350px';
-
-            numberElement.appendChild(imgElement);
-          }, parseInt(showTime * 0.5)); // Delay of 100ms
-        }
-
-      }
     }
+
+    // Display binary numbers in rows
+    if (format === "binary6" || format === "binary8") {
+      displayBinaryNumbers(randomNumber, binaryDigits, numberElement);
+    } else if (format === "decimal") {
+      numberElement.textContent = randomNumber;
+    }
+    // Casillero
+    if (muestraCasillaALaVez) {
+      const N = sacaNumber(format, randomNumber)
+      renderCasillas(N, numberElement)
+    }
+
+    // Imágenes
+    if (muestraImagenesALaVez && format !== "matrices") {
+      setTimeout(() => {
+        numberElement.textContent = '';
+
+        const imgElement = document.createElement("img");
+        const wordIdx = sacaNumber(format, randomNumber)
+        imgElement.src = casilleros.get(usuario)[wordIdx].src;
+        imgElement.alt = randomNumber;
+
+        imgElement.style.display = 'block';
+        imgElement.style.width = '350px';
+        imgElement.style.height = '350px';
+
+        numberElement.appendChild(imgElement);
+      }, parseInt(showTime * 0.5)); // Delay of 100ms
+    }
+
 
     // Remove the element after showTime
     setTimeout(() => {
-      numbersContainer.removeChild(numberElement);
+      if (numberElement && numberElement.parentNode === numbersContainer) {
+        numbersContainer.removeChild(numberElement);
+      }
     }, showTime);
 
     counter++;
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
+
 
   // ================== Game Execution ===================
   const startExecution = () => {
@@ -519,17 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // "Casilla" text div (placed below contentContainer)
       if (muestraCasillaElement.checked) {
-        const numberChunks = number.toString().split("-");
-        const casillaDiv = document.createElement("div");
-
-        numberChunks.forEach(chunk => {
-          const chunkDiv = document.createElement("div");
-          const casilla = casillero[parseInt(chunk)];
-          chunkDiv.textContent = casilla;
-          casillaDiv.appendChild(chunkDiv);
-        });
-        casillaDiv.classList.add("casilla-text");
-        contentWrapper.appendChild(casillaDiv);
+        renderCasillas(number, contentWrapper);
       }
 
       // Append wrapper to cell
@@ -573,21 +533,32 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
       case "i":
         muestraImagenesElement.checked = !muestraImagenesElement.checked;
-        muestraImagenesElement.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
       case "c":
         muestraCasillaElement.checked = !muestraCasillaElement.checked;
-        muestraCasillaElement.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
       case "t":
         reducirTiempo.checked = !reducirTiempo.checked;
-        reducirTiempo.dispatchEvent(new Event("change")); // 🔥 Trigger change event manually
         break;
     }
     toggleMatrixSettings();
   });
 
 });
+
+function renderCasillas(number, contentWrapper) {
+  const numberChunks = number.toString().split("-");
+  const casillaDiv = document.createElement("div");
+
+  numberChunks.forEach(chunk => {
+    const chunkDiv = document.createElement("div");
+    const casilla = casillero[parseInt(chunk)];
+    chunkDiv.textContent = casilla;
+    casillaDiv.appendChild(chunkDiv);
+  });
+  casillaDiv.classList.add("casilla-text");
+  contentWrapper.appendChild(casillaDiv);
+}
 
 function sacaNumber(format, item) {
   // Handle different formats to extract the numeric value
