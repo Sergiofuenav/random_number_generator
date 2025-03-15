@@ -480,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
         contentContainer.appendChild(img);
       } else if (format === "matrices") {
         const idx = item.indexOf("\n");
-        const matrixData = item.slice(idx).split("\n");
+        const matrixData = item.split("\n").slice(1).filter(entry => entry.trim() !== "");
 
         // Add h3 with the value of idx
         const idxHeader = document.createElement("h3");
@@ -494,29 +494,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add the contentContainer inside the wrapper
       contentWrapper.appendChild(contentContainer);
-      if (format !== "matrices") {
-        const number =
-          format.includes("binary6") ?
-            (() => {
-              // For binary6, split the 6 digits into two 3-digit chunks
-              const firstPart = item.slice(0, 3);
-              const secondPart = item.slice(3, 6);
+      const number = sacaNumber(format, item)
 
-              // Convert binary chunks to decimal
-              const firstDecimal = bin_to_int_map.get(firstPart)
-              const secondDecimal = bin_to_int_map.get(secondPart)
+      if (muestraImagenesElement.checked) {
+        const numberChunks = number.toString().split("-");
+        const imagesDiv = document.createElement("div");
 
-              // Compute the integer (first decimal as tens, second as units)
-              const computedInteger = firstDecimal * 10 + secondDecimal;
-
-              return computedInteger;
-            })() : parseInt(item)
-
-        const casilla = casillero[parseInt(number)]
-
-        if (muestraImagenesElement.checked) {
+        numberChunks.forEach(chunk => {
           const imgElement = document.createElement("img");
-          const wordIdx = number
+          const wordIdx = parseInt(chunk);
 
           imgElement.src = casilleros.get(usuario)[wordIdx]?.src || null;
           imgElement.alt = "";
@@ -525,16 +511,25 @@ document.addEventListener("DOMContentLoaded", function () {
           imgElement.style.width = '200px';
           imgElement.style.height = '200px';
 
-          contentWrapper.appendChild(imgElement);
-        }
+          imagesDiv.appendChild(imgElement);
+        });
 
-        // "Casilla" text div (placed below contentContainer)
-        if (muestraCasillaElement.checked) {
-          const casillaDiv = document.createElement("div");
-          casillaDiv.textContent = casilla
-          casillaDiv.classList.add("casilla-text");
-          contentWrapper.appendChild(casillaDiv);
-        }
+        contentWrapper.appendChild(imagesDiv);
+      }
+
+      // "Casilla" text div (placed below contentContainer)
+      if (muestraCasillaElement.checked) {
+        const numberChunks = number.toString().split("-");
+        const casillaDiv = document.createElement("div");
+
+        numberChunks.forEach(chunk => {
+          const chunkDiv = document.createElement("div");
+          const casilla = casillero[parseInt(chunk)];
+          chunkDiv.textContent = casilla;
+          casillaDiv.appendChild(chunkDiv);
+        });
+        casillaDiv.classList.add("casilla-text");
+        contentWrapper.appendChild(casillaDiv);
       }
 
       // Append wrapper to cell
@@ -593,3 +588,74 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+function sacaNumber(format, item) {
+  // Handle different formats to extract the numeric value
+  switch (format) {
+    case "decimal":
+    case "figures":
+      return parseInt(item);
+
+    case "binary6":
+      // case "binary8":
+      // Determine the number of bits per chunk based on format
+      const bitsPerChunk = format === "binary6" ? 3 : 4;
+
+      // Split the binary string into two chunks
+      const firstPart = item.slice(0, bitsPerChunk);
+      const secondPart = item.slice(bitsPerChunk, bitsPerChunk * 2);
+
+      // Convert binary chunks to decimal
+      // For binary6 use the map, for binary8 parse directly
+      const firstDecimal = format === "binary6" ? bin_to_int_map.get(firstPart) : parseInt(firstPart, 2);
+      const secondDecimal = format === "binary6" ? bin_to_int_map.get(secondPart) : parseInt(secondPart, 2);
+
+      // Compute the integer (first decimal as tens, second as units)
+      return firstDecimal * 10 + secondDecimal;
+
+    case "matrices":
+      // Split by newline to separate the index from the matrix
+      const parts = item.split("\n").filter(e => e.trim !== "");
+      const index = parseInt(parts[0]);
+
+      // Process the matrix rows
+      const numbers = [];
+
+      // First row: combine index with first binary value
+      if (parts.length > 1) {
+        const firstRow = parts[1];
+        const firstBinary = firstRow.slice(0, 3);
+        const firstDecimal = bin_to_int_map.get(firstBinary);
+        numbers.push(index * 10 + firstDecimal);
+
+        // Process remaining rows like binary6
+        for (let i = 2; i < parts.length - 1; i += 2) {
+          const rowFirstPart = parts[i]
+          const rowSecondPart = parts[i + 1]
+          const rowFirstDecimal = bin_to_int_map.get(rowFirstPart);
+          const rowSecondDecimal = bin_to_int_map.get(rowSecondPart);
+          const finalNumber = rowFirstDecimal * 10 + rowSecondDecimal
+          numbers.push(finalNumber);
+        }
+      }
+
+      // Join all numbers with hyphens
+      return numbers.join("-");
+  }
+  return format.includes("binary6") ?
+    (() => {
+      // For binary6, split the 6 digits into two 3-digit chunks
+      const firstPart = item.slice(0, 3);
+      const secondPart = item.slice(3, 6);
+
+      // Convert binary chunks to decimal
+      const firstDecimal = bin_to_int_map.get(firstPart);
+      const secondDecimal = bin_to_int_map.get(secondPart);
+
+      // Compute the integer (first decimal as tens, second as units)
+      const computedInteger = firstDecimal * 10 + secondDecimal;
+
+      return computedInteger;
+    })() : parseInt(item);
+}
+
