@@ -244,32 +244,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
           randomNumber += `${form}${color}`;
 
+    if (muestraCasillaALaVez) {
+      const N = sacaNumber(format, randomNumber)
+      renderCasillas(N, numberElement)
+    }
+
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
           imgElement.alt = randomNumber;
           imgElement.style.display = 'block';  // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
-
-          // if (muestraImagenesALaVez) {
-          //   setTimeout(() => {
-          //     numberElement.textContent = '';
-          //     const imgElement = document.createElement("img");
-          //     let wordIdx = parseInt(randomNumber)
-
-          //     imgElement.src = casilleros.get(usuario)[wordIdx].src;
-          //     imgElement.alt = randomNumber;
-
-          //     imgElement.style.display = 'block';  // Replace 200px with your desired width
-          //     imgElement.style.width = '250px';  // Replace 200px with your desired width
-          //     imgElement.style.height = '250px';  // Replace 200px with your desired width
-          //     imgElement.style.marginBottom = '15px';  // Replace 200px with your desired width
-
-          //     // Optionally, you can add object-fit to preserve the aspect ratio
-          //     imgElement.style.objectFit = 'cover';
-
-          //     numberElement.appendChild(imgElement);
-          //   }, parseInt(showTime * 0.4)); // Delay of 100ms
-          // }
 
           break;
         default:
@@ -325,7 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
       numberElement.textContent = randomNumber;
     }
     // Casillero
-    if (muestraCasillaALaVez) {
+    if (muestraCasillaALaVez && format !== "figures") {
       const N = sacaNumber(format, randomNumber)
       renderCasillas(N, numberElement)
     }
