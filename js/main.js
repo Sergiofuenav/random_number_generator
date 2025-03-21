@@ -162,22 +162,33 @@ document.addEventListener("DOMContentLoaded", function () {
       const initialShowTime = parseInt(showTimeInput.value);
       const initialTimeout = parseInt(timeoutInput.value);
 
-      if (counter <= 3) {
-        showTime = Math.max(1, Math.floor(initialShowTime * 1.0));
-        timeout = Math.max(1, Math.floor(initialTimeout * 1.0));
-      } else if (counter <= 6) {
-        showTime = Math.max(1, Math.floor(initialShowTime * 0.8));
-        timeout = Math.max(1, Math.floor(initialTimeout * 0.8));
-      } else if (counter <= 9) {
-        showTime = Math.max(1, Math.floor(initialShowTime * 0.6));
-        timeout = Math.max(1, Math.floor(initialTimeout * 0.6));
-      } else if (counter <= 12) {
-        showTime = Math.max(1, Math.floor(initialShowTime * 0.4));
-        timeout = Math.max(1, Math.floor(initialTimeout * 0.4));
+      if (format === "matrices") {
+        // For matrices, use powers of 0.8
+        const power = Math.min(counter, 12) / 3; // 0, 1, 2, 3, 4 for counter ranges
+        const factor = Math.pow(0.8, power);
+        showTime = Math.max(120, Math.floor(initialShowTime * factor));
+        timeout = Math.max(1, Math.floor(initialTimeout * factor));
       } else {
-        showTime = Math.max(1, Math.floor(initialShowTime * 0.2));
-        timeout = Math.max(1, Math.floor(initialTimeout * 0.2));
+        // For figures and other formats, use the original reduction factors
+        // Calculate reduction factor based on counter ranges
+        let factor = 1.0;
+        if (counter <= 3) {
+          factor = 1.0;
+        } else if (counter <= 6) {
+          factor = 0.8;
+        } else if (counter <= 9) {
+          factor = 0.6;
+        } else if (counter <= 12) {
+          factor = 0.4;
+        } else {
+          factor = 0.2;
+        }
+
+        // Apply the reduction factor to both time values
+        showTime = Math.max(120, Math.floor(initialShowTime * factor));
+        timeout = Math.max(1, Math.floor(initialTimeout * factor));
       }
+      console.log("Counter", counter, showTime, timeout)
     }
 
     const fontSize = parseInt(fontSizeInput.value);
@@ -244,10 +255,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
           randomNumber += `${form}${color}`;
 
-    if (muestraCasillaALaVez) {
-      const N = sacaNumber(format, randomNumber)
-      renderCasillas(N, numberElement)
-    }
+          if (muestraCasillaALaVez) {
+            const N = sacaNumber(format, randomNumber)
+            renderCasillas(N, numberElement)
+          }
+
+          randomIndex += 1
+
+          const randomNumberElement = document.createElement("div")
+          randomNumberElement.textContent = randomIndex
+          randomNumberElement.style.fontSize = "4rem";
+          numberElement.appendChild(randomNumberElement)
 
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
