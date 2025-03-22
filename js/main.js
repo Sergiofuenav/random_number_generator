@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const maxValueLabel = document.querySelector("label[for='maxValue']");
   const lastAttemptGrid = document.getElementById("lastAttemptGrid")
   const randomIndexCheckbox = document.getElementById("randomIndex")
+  const indiceFigurasCheckbox = document.getElementById("indiceFiguras")
 
   let minRange = 0;
   let maxRange = 99;
@@ -78,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const isFallosChecked = practicarFallos.checked;
     colorsContainer.style.display = isFigures && isFallosChecked ? "inline-block" : "none";
+    indiceFigurasCheckbox.style.display = isFigures ? "inline-block" : "none";
   };
 
   if (formatSelect) {
@@ -260,12 +262,14 @@ document.addEventListener("DOMContentLoaded", function () {
             renderCasillas(N, numberElement)
           }
 
-          randomIndex += 1
+          if (indiceFigurasCheckbox.checked) {
+            randomIndex += 1
 
-          const randomNumberElement = document.createElement("div")
-          randomNumberElement.textContent = randomIndex
-          randomNumberElement.style.fontSize = "4rem";
-          numberElement.appendChild(randomNumberElement)
+            const randomNumberElement = document.createElement("div")
+            randomNumberElement.textContent = randomIndex
+            randomNumberElement.style.fontSize = "4rem";
+            numberElement.appendChild(randomNumberElement)
+          }
 
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
