@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const lastAttemptGrid = document.getElementById("lastAttemptGrid")
   const randomIndexCheckbox = document.getElementById("randomIndex")
   const indiceFigurasCheckbox = document.getElementById("indiceFiguras")
+  const indiceFigurasLabel = document.querySelector("label[for='indiceFiguras']");
 
   let minRange = 0;
   let maxRange = 99;
@@ -80,6 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const isFallosChecked = practicarFallos.checked;
     colorsContainer.style.display = isFigures && isFallosChecked ? "inline-block" : "none";
     indiceFigurasCheckbox.style.display = isFigures ? "inline-block" : "none";
+    indiceFigurasLabel.style.display = isFigures ? "inline-block" : "none";
   };
 
   if (formatSelect) {
