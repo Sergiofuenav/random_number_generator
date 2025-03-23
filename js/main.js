@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const fallosInput = document.getElementById("fallos");
   colorsContainer.style.display = "none"
 
-  let coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+  const coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
   let fallosSet = new Set();
 
   const colorCheckboxes = document.querySelectorAll("[id^='color_']");
@@ -111,6 +111,10 @@ document.addEventListener("DOMContentLoaded", function () {
   fallosInput.addEventListener("input", function () {
     const fallosString = fallosInput.value.trim().replace(/,$/, '');
     let array = []
+    if (fallosString === "") {
+      fallosSet = new Set()
+      return
+    }
     if (formatSelect.value.includes("bin")) {
       array = fallosString.split(",")
     } else {
