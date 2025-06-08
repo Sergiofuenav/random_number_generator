@@ -1,4 +1,9 @@
-import { casillero, bin_to_int_map, MULTIPLE_PAIRS_SEPARATOR, color_to_int_map } from "./constants.js";
+import {
+  casillero,
+  bin_to_int_map,
+  MULTIPLE_PAIRS_SEPARATOR,
+  color_to_int_map,
+} from "./constants.js";
 import { generateShape } from "./figures.js";
 import { generateMatrix } from "./matricex.js";
 import { getRandomElementFromSet } from "./utils.js";
@@ -34,11 +39,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const maxRangeInput = document.getElementById("maxValue");
   const minValueLabel = document.querySelector("label[for='minValue']");
   const maxValueLabel = document.querySelector("label[for='maxValue']");
-  const lastAttemptGrid = document.getElementById("lastAttemptGrid")
-  const randomIndexCheckbox = document.getElementById("randomIndex")
-  const indiceFigurasCheckbox = document.getElementById("indiceFiguras")
-  const indiceFigurasLabel = document.querySelector("label[for='indiceFiguras']");
-
+  const lastAttemptGrid = document.getElementById("lastAttemptGrid");
+  const randomIndexCheckbox = document.getElementById("randomIndex");
+  const indiceFigurasCheckbox = document.getElementById("indiceFiguras");
+  const indiceFigurasLabel = document.querySelector(
+    "label[for='indiceFiguras']"
+  );
   let minRange = 0;
   let maxRange = 99;
 
@@ -46,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const numRowsLabel = document.querySelector("label[for='numRows']");
   const numColsLabel = document.querySelector("label[for='numCols']");
   const matrixSizeLabel = document.querySelector("label[for='matrixSize']");
-  const randomIndexLabel = document.querySelector("label[for='randomIndex']")
+  const randomIndexLabel = document.querySelector("label[for='randomIndex']");
 
   const colorsContainer = document.getElementById("colors");
 
@@ -67,8 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
     matrixSizeLabel.style.display = isMatrices ? "inline-block" : "none";
     randomIndexLabel.style.display = isMatrices ? "inline-block" : "none";
 
-    numPairsInput.style.display = isMatrices || isFigures ? "none" : "inline-block";
-    numPairsLabel.style.display = isMatrices || isFigures ? "none" : "inline-block";
+    numPairsInput.style.display =
+      isMatrices || isFigures ? "none" : "inline-block";
+    numPairsLabel.style.display =
+      isMatrices || isFigures ? "none" : "inline-block";
 
     const isDecimal = formatSelect.value === "decimal";
 
@@ -79,7 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
     maxValueLabel.style.display = isDecimal ? "inline-block" : "none";
 
     const isFallosChecked = practicarFallos.checked;
-    colorsContainer.style.display = isFigures && isFallosChecked ? "inline-block" : "none";
+    colorsContainer.style.display =
+      isFigures && isFallosChecked ? "inline-block" : "none";
     indiceFigurasCheckbox.style.display = isFigures ? "inline-block" : "none";
     indiceFigurasLabel.style.display = isFigures ? "inline-block" : "none";
   };
@@ -90,16 +99,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   const fallosInput = document.getElementById("fallos");
-  colorsContainer.style.display = "none"
+  colorsContainer.style.display = "none";
 
-  const coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+  const coloresSet = new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   let fallosSet = new Set();
 
   const colorCheckboxes = document.querySelectorAll("[id^='color_']");
   colorCheckboxes.forEach(function (checkbox) {
     checkbox.addEventListener("change", function () {
       const color = checkbox.value.toLowerCase();
-      const int_from_color = color_to_int_map.get(color)
+      const int_from_color = color_to_int_map.get(color);
       if (checkbox.checked) {
         coloresSet.add(int_from_color);
       } else {
@@ -109,14 +118,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   fallosInput.addEventListener("input", function () {
-    const fallosString = fallosInput.value.trim().replace(/,$/, '');
-    let array = []
+    const fallosString = fallosInput.value.trim().replace(/,$/, "");
+    let array = [];
     if (fallosString === "") {
-      fallosSet = new Set()
-      return
+      fallosSet = new Set();
+      return;
     }
     if (formatSelect.value.includes("bin")) {
-      array = fallosString.split(",")
+      array = fallosString.split(",");
     } else {
       array = fallosString.split(",").map(Number);
     }
@@ -125,12 +134,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   practicarFallos.addEventListener("change", function () {
     if (practicarFallos.checked) {
-      colors.style.display = "figures" === formatSelect.value ? "inline" : "none";
+      colors.style.display =
+        "figures" === formatSelect.value ? "inline" : "none";
       fallos.style.display = "inline";
       fallos.previousElementSibling.style.display = "inline";
       colors.previousElementSibling.style.display = "inline";
     } else {
-      fallosSet = new Set()
+      fallosSet = new Set();
       colors.style.display = "none";
       fallos.style.display = "none";
       if (fallos.previouselementsibling) {
@@ -151,13 +161,13 @@ document.addEventListener("DOMContentLoaded", function () {
   let counter = 0; // Tracks iteration count
   let running = false; // Flag to control execution state
   let numbers = []; // Stores generated numbers for later use
-  let numPairs = parseInt(numPairsInput.value)
+  let numPairs = parseInt(numPairsInput.value);
   let format = formatSelect.value; // Fetch the selected format
-  let usuario = usuarioSelect.value
-  let numRows = parseInt(numRowsInput.value)
-  let numCols = parseInt(numColsInput.value)
-  let matrixSize = parseInt(matrixSizeInput.value)
-  let lastGameType = format
+  let usuario = usuarioSelect.value;
+  let numRows = parseInt(numRowsInput.value);
+  let numCols = parseInt(numColsInput.value);
+  let matrixSize = parseInt(matrixSizeInput.value);
+  let lastGameType = format;
 
   function runIteration(showTime, timeout) {
     if (!running || counter >= parseInt(amountInput.value)) {
@@ -196,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
         showTime = Math.max(120, Math.floor(initialShowTime * factor));
         timeout = Math.max(1, Math.floor(initialTimeout * factor));
       }
-      console.log("Counter", counter, showTime, timeout)
+      console.log("Counter", counter, showTime, timeout);
     }
 
     const fontSize = parseInt(fontSizeInput.value);
@@ -214,42 +224,71 @@ document.addEventListener("DOMContentLoaded", function () {
       muestraImagenesElement.checked && numPairs === 1;
 
     numbersContainer.appendChild(numberElement);
-
+    const terminacionesValue = document
+      .getElementById("terminaciones")
+      .value.trim();
+    const randomTerminacion = terminacionesValue
+      ? parseInt(
+          terminacionesValue.split(",")[
+            Math.floor(Math.random() * terminacionesValue.split(",").length)
+          ]
+        )
+      : null;
     // Generate the random numbers (string)
     for (let i = 1; i <= numPairs; ++i) {
       switch (format) {
         case "binary6":
           if (i > 1) {
-            randomNumber += MULTIPLE_PAIRS_SEPARATOR
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR;
           }
 
-          let unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-          let decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+          let unidadBin6 = (
+            terminacionesValue
+              ? randomTerminacion
+              : Math.floor(Math.random() * 8)
+          )
+            .toString(2)
+            .padStart(3, "0");
+          let decenaBin6 = Math.floor(Math.random() * 8)
+            .toString(2)
+            .padStart(3, "0");
 
           if (practicarFallos && fallosSet.size > 0) {
             while (!fallosSet.has(unidadBin6) && !fallosSet.has(decenaBin6)) {
-              unidadBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
-              decenaBin6 = Math.floor(Math.random() * 8).toString(2).padStart(3, "0")
+              unidadBin6 = Math.floor(Math.random() * 8)
+                .toString(2)
+                .padStart(3, "0");
+              decenaBin6 = Math.floor(Math.random() * 8)
+                .toString(2)
+                .padStart(3, "0");
             }
           }
-          randomNumber += decenaBin6 + unidadBin6
+          randomNumber += decenaBin6 + unidadBin6;
           binaryDigits = 3; // 2 rows of 3 binary digits each
           break;
         case "binary8":
           if (i > 1) {
-            randomNumber += MULTIPLE_PAIRS_SEPARATOR
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR;
           }
-          randomNumber = ""
-          let unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-          let decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+          randomNumber = "";
+          let unidadBin8 = Math.floor(Math.random() * 16)
+            .toString(2)
+            .padStart(4, "0");
+          let decenaBin8 = Math.floor(Math.random() * 16)
+            .toString(2)
+            .padStart(4, "0");
 
           if (practicarFallos && fallosSet.size > 0) {
             while (!fallosSet.has(unidadBin8) && !fallosSet.has(decenaBin8)) {
-              unidadBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
-              decenaBin8 = Math.floor(Math.random() * 16).toString(2).padStart(4, "0")
+              unidadBin8 = Math.floor(Math.random() * 16)
+                .toString(2)
+                .padStart(4, "0");
+              decenaBin8 = Math.floor(Math.random() * 16)
+                .toString(2)
+                .padStart(4, "0");
             }
           }
-          randomNumber += decenaBin8 + unidadBin8
+          randomNumber += decenaBin8 + unidadBin8;
           binaryDigits = 4; // 2 rows of 4 binary digits each
           break;
         case "figures":
@@ -257,75 +296,89 @@ document.addEventListener("DOMContentLoaded", function () {
           let color = Math.floor(Math.random() * 9);
 
           if (practicarFallos) {
-            form = fallosSet.size > 0 ? getRandomElementFromSet(fallosSet) : generateShape()
-            color = getRandomElementFromSet(coloresSet)
+            form =
+              fallosSet.size > 0
+                ? getRandomElementFromSet(fallosSet)
+                : generateShape();
+            color = getRandomElementFromSet(coloresSet);
           }
 
           randomNumber += `${form}${color}`;
 
           if (muestraCasillaALaVez) {
-            const N = sacaNumber(format, randomNumber)
-            renderCasillas(N, numberElement)
+            const N = sacaNumber(format, randomNumber);
+            renderCasillas(N, numberElement);
           }
 
           if (indiceFigurasCheckbox.checked) {
-            randomIndex += 1
+            randomIndex += 1;
 
-            const randomNumberElement = document.createElement("div")
-            randomNumberElement.textContent = randomIndex
+            const randomNumberElement = document.createElement("div");
+            randomNumberElement.textContent = randomIndex;
             randomNumberElement.style.fontSize = "4rem";
-            numberElement.appendChild(randomNumberElement)
+            numberElement.appendChild(randomNumberElement);
           }
 
           const imgElement = document.createElement("img");
           imgElement.src = preloadedFigures[parseInt(randomNumber)].src;
           imgElement.alt = randomNumber;
-          imgElement.style.display = 'block';  // Replace 200px with your desired width
+          imgElement.style.display = "block"; // Replace 200px with your desired width
           numberElement.appendChild(imgElement);
 
           break;
         default:
           if (i > 1) {
-            randomNumber += MULTIPLE_PAIRS_SEPARATOR
+            randomNumber += MULTIPLE_PAIRS_SEPARATOR;
           }
-          let unidadDecimal = Math.floor(Math.random() * 10);
+          let unidadDecimal = terminacionesValue
+            ? randomTerminacion
+            : Math.floor(Math.random() * 10);
           let decenaDecimal = Math.floor(Math.random() * 10);
           let numero = decenaDecimal * 10 + unidadDecimal;
 
-          while (numero < minRange || numero > maxRange || (practicarFallos && fallosSet.size > 0 && (!fallosSet.has(unidadDecimal) && !fallosSet.has(decenaDecimal)))) {
+          while (
+            numero < minRange ||
+            numero > maxRange ||
+            (practicarFallos &&
+              fallosSet.size > 0 &&
+              !fallosSet.has(unidadDecimal) &&
+              !fallosSet.has(decenaDecimal))
+          ) {
             unidadDecimal = Math.floor(Math.random() * 10);
             decenaDecimal = Math.floor(Math.random() * 10);
             numero = decenaDecimal * 10 + unidadDecimal;
           }
-          randomNumber += (numero)
-            .toString()
-            .padStart(2, "0");
+          randomNumber += numero.toString().padStart(2, "0");
       }
     }
 
     // Render the numbers on the screen
     if (format === "matrices") {
       // Display a random number between 1 and 12
-      const randomNumberElement = document.createElement("div")
+      const randomNumberElement = document.createElement("div");
       if (randomIndexCheckbox.checked) {
         // Random index entre 1 y 9 para practicar lectura
-        randomIndex = Math.floor(Math.random() * 9) + 1
+        randomIndex = Math.floor(Math.random() * 9) + 1;
       } else {
         randomIndex += 1;
         randomIndex %= 13;
-        if (randomIndex === 0)
-          randomIndex = 1;
+        if (randomIndex === 0) randomIndex = 1;
       }
-      randomNumberElement.textContent = randomIndex
-      randomNumberElement.style.fontSize = fontSize
-      numberElement.appendChild(randomNumberElement)
+      randomNumberElement.textContent = randomIndex;
+      randomNumberElement.style.fontSize = fontSize;
+      numberElement.appendChild(randomNumberElement);
 
-      const matrixElement = document.createElement("div")
-      const matrix = generateMatrix(matrixElement, matrixSize, numRows, numCols);
-      numberElement.appendChild(matrixElement)
-      const nextElement = `${randomIndex}\n${matrix}`
+      const matrixElement = document.createElement("div");
+      const matrix = generateMatrix(
+        matrixElement,
+        matrixSize,
+        numRows,
+        numCols
+      );
+      numberElement.appendChild(matrixElement);
+      const nextElement = `${randomIndex}\n${matrix}`;
       numbers.push(nextElement);
-      randomNumber = nextElement
+      randomNumber = nextElement;
     } else {
       numbers.push(randomNumber);
     }
@@ -338,28 +391,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Casillero
     if (muestraCasillaALaVez && format !== "figures") {
-      const N = sacaNumber(format, randomNumber)
-      renderCasillas(N, numberElement)
+      const N = sacaNumber(format, randomNumber);
+      renderCasillas(N, numberElement);
     }
 
     // Imágenes
     if (muestraImagenesALaVez && format !== "matrices") {
       setTimeout(() => {
-        numberElement.textContent = '';
+        numberElement.textContent = "";
 
         const imgElement = document.createElement("img");
-        const wordIdx = sacaNumber(format, randomNumber)
+        const wordIdx = sacaNumber(format, randomNumber);
         imgElement.src = casilleros.get(usuario)[wordIdx].src;
         imgElement.alt = randomNumber;
 
-        imgElement.style.display = 'block';
-        imgElement.style.width = '350px';
-        imgElement.style.height = '350px';
+        imgElement.style.display = "block";
+        imgElement.style.width = "350px";
+        imgElement.style.height = "350px";
 
         numberElement.appendChild(imgElement);
       }, parseInt(showTime * 0.5)); // Delay of 100ms
     }
-
 
     // Remove the element after showTime
     setTimeout(() => {
@@ -372,7 +424,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(() => runIteration(showTime, timeout), showTime + timeout); // Recursive call
   }
 
-
   // ================== Game Execution ===================
   const startExecution = () => {
     if (running) return; // Prevent duplicate executions
@@ -384,21 +435,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
     lastAttemptGrid.style.display = "none";
     numbersContainer.innerHTML = "";
-    lastAttemptGrid.innerHTML = ""
+    lastAttemptGrid.innerHTML = "";
 
     const initialShowTime = parseInt(showTimeInput.value);
     const initialTimeout = parseInt(timeoutInput.value);
 
     format = formatSelect.value; // Fetch the selected format
 
-    lastGameType = format
+    lastGameType = format;
     numRows = parseInt(numRowsInput.value);
     numCols = parseInt(numColsInput.value);
     usuario = usuarioSelect.value;
-    numPairs = parseInt(numPairsInput.value)
+    numPairs = parseInt(numPairsInput.value);
 
-    minRange = parseInt(minRangeInput.value)
-    maxRange = parseInt(maxRangeInput.value)
+    minRange = parseInt(minRangeInput.value);
+    maxRange = parseInt(maxRangeInput.value);
 
     randomIndex = 0;
 
@@ -415,8 +466,8 @@ document.addEventListener("DOMContentLoaded", function () {
     running = false; // Stop execution gracefully
     counter = 0;
     numbersContainer.innerHTML = "";
-    lastAttemptGrid.innerHTML = ""
-  }
+    lastAttemptGrid.innerHTML = "";
+  };
 
   // ================== Last Attempt Grid ===================
   const displayLastAttempt = () => {
@@ -436,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function () {
     grid.classList.add("grid");
     grid.style.gridTemplateColumns = `repeat(${reviewColsInput.value}, 1fr)`;
 
-    attemptData.forEach(item => {
+    attemptData.forEach((item) => {
       const cell = document.createElement("div");
       cell.classList.add("grid-cell");
 
@@ -452,7 +503,11 @@ document.addEventListener("DOMContentLoaded", function () {
         decimal.textContent = item;
         contentContainer.appendChild(decimal);
       } else if (format === "binary6" || format === "binary8") {
-        displayBinaryNumbers(item, format === "binary6" ? 3 : 4, contentContainer);
+        displayBinaryNumbers(
+          item,
+          format === "binary6" ? 3 : 4,
+          contentContainer
+        );
       } else if (format === "figures") {
         let figureIndex = parseInt(item);
         const img = document.createElement("img");
@@ -462,7 +517,10 @@ document.addEventListener("DOMContentLoaded", function () {
         contentContainer.appendChild(img);
       } else if (format === "matrices") {
         const idx = item.indexOf("\n");
-        const matrixData = item.split("\n").slice(1).filter(entry => entry.trim() !== "");
+        const matrixData = item
+          .split("\n")
+          .slice(1)
+          .filter((entry) => entry.trim() !== "");
 
         // Add h3 with the value of idx
         const idxHeader = document.createElement("h3");
@@ -476,22 +534,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Add the contentContainer inside the wrapper
       contentWrapper.appendChild(contentContainer);
-      const number = sacaNumber(format, item)
+      const number = sacaNumber(format, item);
 
       if (muestraImagenesElement.checked) {
         const numberChunks = number.toString().split("-");
         const imagesDiv = document.createElement("div");
 
-        numberChunks.forEach(chunk => {
+        numberChunks.forEach((chunk) => {
           const imgElement = document.createElement("img");
           const wordIdx = parseInt(chunk);
 
           imgElement.src = casilleros.get(usuario)[wordIdx]?.src || null;
           imgElement.alt = "";
 
-          imgElement.style.display = 'block';
-          imgElement.style.width = '200px';
-          imgElement.style.height = '200px';
+          imgElement.style.display = "block";
+          imgElement.style.width = "200px";
+          imgElement.style.height = "200px";
 
           imagesDiv.appendChild(imgElement);
         });
@@ -515,11 +573,14 @@ document.addEventListener("DOMContentLoaded", function () {
   checkButton.addEventListener("click", displayLastAttempt);
   reviewColsInput.addEventListener("change", displayLastAttempt);
 
-  document.getElementById("casillero").addEventListener("change", displayLastAttempt);
-  document.getElementById("imagenes").addEventListener("change", displayLastAttempt);
+  document
+    .getElementById("casillero")
+    .addEventListener("change", displayLastAttempt);
+  document
+    .getElementById("imagenes")
+    .addEventListener("change", displayLastAttempt);
 
-
-  // ============ Controls ================  
+  // ============ Controls ================
   document.addEventListener("keydown", function (event) {
     switch (event.key.toLowerCase()) {
       case "enter":
@@ -555,14 +616,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     toggleMatrixSettings();
   });
-
 });
 
 function renderCasillas(number, contentWrapper) {
   const numberChunks = number.toString().split("-");
   const casillaDiv = document.createElement("div");
 
-  numberChunks.forEach(chunk => {
+  numberChunks.forEach((chunk) => {
     const chunkDiv = document.createElement("div");
     const casilla = casillero[parseInt(chunk)];
     chunkDiv.textContent = casilla;
@@ -590,15 +650,21 @@ function sacaNumber(format, item) {
 
       // Convert binary chunks to decimal
       // For binary6 use the map, for binary8 parse directly
-      const firstDecimal = format === "binary6" ? bin_to_int_map.get(firstPart) : parseInt(firstPart, 2);
-      const secondDecimal = format === "binary6" ? bin_to_int_map.get(secondPart) : parseInt(secondPart, 2);
+      const firstDecimal =
+        format === "binary6"
+          ? bin_to_int_map.get(firstPart)
+          : parseInt(firstPart, 2);
+      const secondDecimal =
+        format === "binary6"
+          ? bin_to_int_map.get(secondPart)
+          : parseInt(secondPart, 2);
 
       // Compute the integer (first decimal as tens, second as units)
       return firstDecimal * 10 + secondDecimal;
 
     case "matrices":
       // Split by newline to separate the index from the matrix
-      const parts = item.split("\n").filter(e => e.trim !== "");
+      const parts = item.split("\n").filter((e) => e.trim !== "");
       const index = parseInt(parts[0]);
 
       // Process the matrix rows
@@ -613,11 +679,11 @@ function sacaNumber(format, item) {
 
         // Process remaining rows like binary6
         for (let i = 2; i < parts.length - 1; i += 2) {
-          const rowFirstPart = parts[i]
-          const rowSecondPart = parts[i + 1]
+          const rowFirstPart = parts[i];
+          const rowSecondPart = parts[i + 1];
           const rowFirstDecimal = bin_to_int_map.get(rowFirstPart);
           const rowSecondDecimal = bin_to_int_map.get(rowSecondPart);
-          const finalNumber = rowFirstDecimal * 10 + rowSecondDecimal
+          const finalNumber = rowFirstDecimal * 10 + rowSecondDecimal;
           numbers.push(finalNumber);
         }
       }
@@ -625,20 +691,20 @@ function sacaNumber(format, item) {
       // Join all numbers with hyphens
       return numbers.join("-");
   }
-  return format.includes("binary6") ?
-    (() => {
-      // For binary6, split the 6 digits into two 3-digit chunks
-      const firstPart = item.slice(0, 3);
-      const secondPart = item.slice(3, 6);
+  return format.includes("binary6")
+    ? (() => {
+        // For binary6, split the 6 digits into two 3-digit chunks
+        const firstPart = item.slice(0, 3);
+        const secondPart = item.slice(3, 6);
 
-      // Convert binary chunks to decimal
-      const firstDecimal = bin_to_int_map.get(firstPart);
-      const secondDecimal = bin_to_int_map.get(secondPart);
+        // Convert binary chunks to decimal
+        const firstDecimal = bin_to_int_map.get(firstPart);
+        const secondDecimal = bin_to_int_map.get(secondPart);
 
-      // Compute the integer (first decimal as tens, second as units)
-      const computedInteger = firstDecimal * 10 + secondDecimal;
+        // Compute the integer (first decimal as tens, second as units)
+        const computedInteger = firstDecimal * 10 + secondDecimal;
 
-      return computedInteger;
-    })() : parseInt(item);
+        return computedInteger;
+      })()
+    : parseInt(item);
 }
-
